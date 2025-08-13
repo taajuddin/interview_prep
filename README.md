@@ -887,4 +887,4 @@ function sum(x) {
 ---
 
 ## License
-MIT © Your Name
+MIT © Md Taaj Uddin
