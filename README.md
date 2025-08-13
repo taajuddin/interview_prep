@@ -1,8 +1,6 @@
 # Full-Stack JavaScript Interview Preparation Guide
 *A complete, production-quality README for JavaScript, React, Node.js, Databases, System Design & DSA.*
 
-> Curated and written like an experienced developer would explain in code reviews & design docs.
-
 ---
 
 ## 📚 Table of Contents
