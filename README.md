@@ -752,14 +752,21 @@ Function.prototype.myBind = function(ctx, ...preset) {
 
 ### 2) Flatten Array (No `Array.flat`)
 ```js
-function flatten(a) {
-  const out = [];
-  (function rec(x) {
-    for (const v of x) Array.isArray(v) ? rec(v) : out.push(v);
-  })(a);
-  return out;
+function flattenArray(arr) {
+    const flatten = [];
+    
+    arr.forEach(item => {
+        if (Array.isArray(item)) {
+            flatten.push(...flattenArray(item));
+        } else {
+            flatten.push(item);
+        }
+    });
+
+    return flatten;
 }
-// Example: flatten([1,2,3,[4,5,6,[7,8,[10,11]]],9])
+}
+// Example: flattenArray([1,2,3,[4,5,6,[7,8,[10,11]]],9])
 ```
 
 ### 3) Inline 5 divs in a row without flex/margin/padding
