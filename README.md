@@ -2,7 +2,7 @@
 *A complete, production-quality README for JavaScript, React, Node.js, Databases, System Design & DSA.*
 
 # Documentation Index
-- [Javascript Coding Docs](README_javascriptCoding.md)
+- [Javascript Coding Docs](/javascriptCoding.md)
 
 
 ---
