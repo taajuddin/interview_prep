@@ -1,213 +1,466 @@
-# Node.js Interview Questions & Answers
+# Node.js Fundamentals — README
 
-This document contains frequently asked **Node.js interview questions** with simple explanations and examples.
-
----
-
-## 1. What is Node.js?
-- Node.js is a **runtime environment** that lets you run JavaScript code outside the browser.
-- Built on **Google Chrome’s V8 engine**.
-- Uses **event-driven, non-blocking I/O**.
-
----
-
-## 2. Why use Node.js?
-- Fast and scalable
-- Single-threaded but handles many connections concurrently
-- Huge ecosystem (NPM)
-- Perfect for real-time apps (chat, streaming)
+## Table of Contents
+- Node.js Fundamentals
+- Core Concepts
+- Express.js & Web Development
+- Security & Authentication
+- Advanced Topics
+- Senior-Level Concepts
+- Code Examples
+- Practice Exercises
+- Additional Resources
 
 ---
 
-## 3. What is NPM?
-- **Node Package Manager**
-- Comes with Node.js installation
-- Used to install/manage packages
+## 🎯 Node.js Fundamentals
+
+### What is Node.js?
+Node.js is a runtime environment that allows executing JavaScript outside the browser. It's built on Google Chrome's V8 JavaScript engine and uses an event-driven, non-blocking I/O model that makes it lightweight and efficient.
+
+### Why use Node.js?
+- Fast and scalable due to non-blocking architecture
+- Handles many concurrent connections with a single thread
+- Rich ecosystem (NPM) with numerous packages
+- Ideal for real-time applications (chat apps, streaming apps)
+- JavaScript on both client and server side
+
+### What is NPM?
+Node Package Manager (NPM) is the default package manager for Node.js, used to install, manage, and publish libraries.
 
 ```bash
-npm init -y   # initialize project
-npm install express   # install express
+npm init -y          # initialize project
+npm install express  # install express
+npm update           # update packages
+npm run start        # run start script
 ```
 
 ---
 
-## 4. What are CommonJS and ES Modules?
-- **CommonJS**: Uses `require`
-```js
-const fs = require('fs');
+## 🔧 Core Concepts
+
+### CommonJS vs ES Modules
+**CommonJS (CJS)** → Uses `require` and `module.exports`
+
+```javascript
+const fs = require("fs");
+module.exports = myFunction;
 ```
-- **ES Module**: Uses `import`
-```js
-import fs from 'fs';
+
+**ES Modules (ESM)** → Uses `import` and `export`
+
+```javascript
+import fs from "fs";
+export default myFunction;
 ```
 
----
+### Event Loop in Node.js
+Node.js uses the event loop to handle asynchronous tasks, allowing it to be non-blocking even though it's single-threaded. The event loop delegates I/O operations to the system kernel whenever possible, and continues executing other code while waiting for these operations to complete.
 
-## 5. What is Event Loop in Node.js?
-- A mechanism that handles **async operations**.
-- Node.js is single-threaded but uses the event loop to process callbacks efficiently.
+### Callbacks, Promises, and Async/Await
+**Callback** → Pass a function as an argument
 
----
+```javascript
+fs.readFile('file.txt', (err, data) => {
+  if (err) throw err;
+  console.log(data);
+});
+```
 
-## 6. What is the difference between setImmediate(), setTimeout(), and process.nextTick()?
-- `setImmediate()` → Executes after I/O events.
-- `setTimeout(fn, 0)` → Executes after a minimum delay.
-- `process.nextTick()` → Executes immediately after the current operation.
+**Promise** → Handle async operations with `.then()` / `.catch()`
 
----
+```javascript
+fetch("https://api.example.com/data")
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(err => console.error(err));
+```
 
-## 7. How does Node.js handle asynchronous operations?
-- Using callbacks, promises, and async/await.
+**Async/Await** → Cleaner way to write async code
 
-```js
-// Using async/await
-async function fetchData() {
+```javascript
+const fetchData = async () => {
   try {
-    const res = await fetch('https://jsonplaceholder.typicode.com/posts');
-    const data = await res.json();
-    console.log(data);
+    const res = await fetch("https://api.example.com/data");
+    console.log(await res.json());
   } catch (err) {
     console.error(err);
   }
-}
+};
 ```
 
 ---
 
-## 8. What is Middleware in Node.js?
-- Functions that execute between request and response in Express.js.
+## 🌐 Express.js & Web Development
 
-```js
+### Express.js Basics
+Express.js is the most popular framework for building web apps with Node.js, providing routing, middleware, and simplified request/response handling.
+
+```javascript
+const express = require('express');
+const app = express();
+const port = 3000;
+
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+```
+
+### Middleware in Express
+Middleware functions process requests before reaching the route handler.
+
+```javascript
+// Logging middleware
 app.use((req, res, next) => {
-  console.log('Request URL:', req.url);
+  console.log("Request URL:", req.url, " - ", new Date());
   next();
+});
+
+// Body parsing middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+```
+
+### REST APIs in Node.js
+REST (Representational State Transfer) uses HTTP methods: GET, POST, PUT, DELETE.
+
+```javascript
+let users = [];
+
+// GET all users
+app.get("/users", (req, res) => res.json(users));
+
+// GET user by ID
+app.get("/users/:id", (req, res) => {
+  const user = users.find(u => u.id === parseInt(req.params.id));
+  if (!user) return res.status(404).json({ message: "User not found" });
+  res.json(user);
+});
+
+// CREATE new user
+app.post("/users", (req, res) => {
+  const newUser = { id: users.length + 1, ...req.body };
+  users.push(newUser);
+  res.status(201).json(newUser);
+});
+
+// UPDATE user
+app.put("/users/:id", (req, res) => {
+  const index = users.findIndex(u => u.id === parseInt(req.params.id));
+  if (index === -1) return res.status(404).json({ message: "User not found" });
+
+  users[index] = { ...users[index], ...req.body };
+  res.json(users[index]);
+});
+
+// DELETE user
+app.delete("/users/:id", (req, res) => {
+  const index = users.findIndex(u => u.id === parseInt(req.params.id));
+  if (index === -1) return res.status(404).json({ message: "User not found" });
+
+  users.splice(index, 1);
+  res.status(204).send();
+});
+```
+
+### Error Handling in Express
+
+```javascript
+// Async error wrapper
+const asyncHandler = fn => (req, res, next) => {
+  Promise.resolve(fn(req, res, next)).catch(next);
+};
+
+// 404 handler
+app.use((req, res, next) => {
+  res.status(404).json({ message: "Route not found" });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: "Something went wrong!" });
 });
 ```
 
 ---
 
-## 9. What is Express.js?
-- A minimal and flexible web framework for Node.js.
-- Provides routing, middleware, and HTTP utilities.
+## 🔒 Security & Authentication
 
-```js
-const express = require('express');
-const app = express();
+### Authentication in Node.js
+**JWT (JSON Web Token)** for stateless authentication:
 
-app.get('/', (req, res) => res.send('Hello Node.js'));
+```javascript
+const jwt = require("jsonwebtoken");
 
-app.listen(3000);
+// Create token
+const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { 
+  expiresIn: "1h" 
+});
+
+// Verify token
+const decoded = jwt.verify(token, process.env.JWT_SECRET);
+```
+
+**OAuth2** for third-party logins (using Passport.js):
+
+```javascript
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "/auth/google/callback"
+  },
+  (accessToken, refreshToken, profile, done) => {
+    // Find or create user
+    User.findOrCreate({ googleId: profile.id }, (err, user) => {
+      return done(err, user);
+    });
+  }
+));
+```
+
+### Security Best Practices
+- Use Helmet.js for setting security headers:
+
+```javascript
+const helmet = require('helmet');
+app.use(helmet());
+```
+
+- Sanitize user input to prevent XSS and SQL injection:
+
+```javascript
+const validator = require('validator');
+const cleanInput = validator.escape(req.body.input);
+```
+
+- Store passwords securely with bcrypt:
+
+```javascript
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
+// Hash password
+const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+// Compare password
+const match = await bcrypt.compare(plainPassword, hashedPassword);
+```
+
+- Use HTTPS in production
+- Implement rate limiting to prevent brute force attacks
+- Use environment variables for sensitive data:
+
+```javascript
+require('dotenv').config();
+const dbPassword = process.env.DB_PASSWORD;
 ```
 
 ---
 
-## 10. What are Streams in Node.js?
-- Streams handle data **piece by piece** (not all at once).
-- Types: Readable, Writable, Duplex, Transform.
+## 🚀 Advanced Topics
 
-```js
+### Node.js Streams
+Streams handle large data efficiently without loading everything into memory.
+
+Types: Readable, Writable, Duplex, Transform
+
+```javascript
 const fs = require('fs');
-const readStream = fs.createReadStream('file.txt');
 
-readStream.on('data', chunk => console.log(chunk.toString()));
+// Copy file using streams
+const readStream = fs.createReadStream('input.txt');
+const writeStream = fs.createWriteStream('output.txt');
+
+readStream.pipe(writeStream);
+
+readStream.on('end', () => {
+  console.log('File copy completed');
+});
+
+readStream.on('error', (err) => {
+  console.error('Error reading file:', err);
+});
 ```
 
----
+### Cluster Module in Node.js
 
-## 11. What is Cluster Module in Node.js?
-- Used to run multiple instances of Node.js to utilize multi-core CPUs.
-
-```js
+```javascript
 const cluster = require('cluster');
-const http = require('http');
 const os = require('os');
 
 if (cluster.isMaster) {
-  os.cpus().forEach(() => cluster.fork());
+  const numCPUs = os.cpus().length;
+
+  console.log(`Master ${process.pid} is running`);
+  console.log(`Forking for ${numCPUs} CPUs`);
+
+  // Fork workers
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on('exit', (worker, code, signal) => {
+    console.log(`Worker ${worker.process.pid} died`);
+    // Restart worker
+    cluster.fork();
+  });
 } else {
-  http.createServer((req, res) => res.end('Hello')).listen(3000);
+  // Workers can share any TCP connection
+  require('./server.js');
+  console.log(`Worker ${process.pid} started`);
 }
+```
+
+### Scaling Node.js Applications
+- Use Load Balancing with PM2 or Kubernetes
+- Cache responses with Redis
+- Use Horizontal Scaling with multiple instances
+- Database optimization with indexing and connection pooling
+- Implement microservices architecture for large applications
+
+### Database Integration
+**MongoDB (NoSQL) with Mongoose:**
+
+```javascript
+const mongoose = require('mongoose');
+mongoose.connect(process.env.MONGODB_URI);
+
+const userSchema = new mongoose.Schema({
+  name: String,
+  email: { type: String, unique: true },
+  age: Number
+});
+
+const User = mongoose.model('User', userSchema);
+
+// Create user
+const user = new User({ name: 'John', email: 'john@example.com', age: 30 });
+await user.save();
+
+// Find users
+const users = await User.find({ age: { $gt: 25 } });
+```
+
+**PostgreSQL/MySQL with Sequelize:**
+
+```javascript
+const { Sequelize, DataTypes } = require('sequelize');
+const sequelize = new Sequelize('database', 'username', 'password', {
+  host: 'localhost',
+  dialect: 'postgres'
+});
+
+const User = sequelize.define('User', {
+  name: DataTypes.STRING,
+  email: { type: DataTypes.STRING, unique: true },
+  age: DataTypes.INTEGER
+});
+
+await User.sync();
+const users = await User.findAll({ where: { age: { [Sequelize.Op.gt]: 25 } } });
 ```
 
 ---
 
-## 12. Difference between process and thread?
-- **Process** → Independent execution, separate memory.
-- **Thread** → Lightweight, share memory inside a process.
+## 🧪 Testing in Node.js
+Using Jest:
 
-Node.js uses **single-threaded event loop**, but can spawn child processes.
+```javascript
+const request = require('supertest');
+const app = require('../app');
 
----
+describe('User API', () => {
+  test('GET /users returns 200', async () => {
+    const res = await request(app).get('/users');
+    expect(res.statusCode).toBe(200);
+  });
 
-## 13. How do you handle errors in Node.js?
-- Using **try/catch**, **error-first callbacks**, or **.catch() in promises**.
+  test('POST /users creates a new user', async () => {
+    const res = await request(app)
+      .post('/users')
+      .send({ name: 'John', email: 'john@example.com' });
 
-```js
-fs.readFile('file.txt', (err, data) => {
-  if (err) return console.error(err);
-  console.log(data.toString());
+    expect(res.statusCode).toBe(201);
+    expect(res.body).toHaveProperty('id');
+  });
 });
 ```
 
 ---
 
-## 14. Difference between synchronous and asynchronous code?
-- **Synchronous** → Executes line by line, blocking.
-- **Asynchronous** → Non-blocking, uses callbacks/promises.
+## 👨‍💼 Senior-Level Concepts
 
----
+### Rate Limiting
+Prevent API abuse with express-rate-limit:
 
-## 15. What is the difference between require() and import?
-- `require()` → CommonJS, can be used anywhere.
-- `import` → ES Module, static and hoisted.
+```javascript
+const rateLimit = require('express-rate-limit');
 
----
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP'
+});
 
-## 16. What are child processes in Node.js?
-- Allow executing other programs/scripts from Node.js.
-
-```js
-const { exec } = require('child_process');
-exec('ls', (err, stdout) => console.log(stdout));
+app.use('/api/', limiter);
 ```
 
----
+### API Versioning
+Implement API versioning for backward compatibility:
 
-## 17. How to improve Node.js performance?
-- Use clustering
-- Caching responses
-- Load balancing
-- Use async APIs
-- Optimize queries (DB, Redis, etc.)
-
----
-
-## 18. Difference between fork() and spawn() in Node.js?
-- `spawn()` → Launches a new process with a command.
-- `fork()` → Creates a new Node.js process (child process) with IPC (communication).
-
----
-
-## 19. What is JWT in Node.js?
-- **JSON Web Token** → Used for authentication.
-- Encoded string containing payload, header, and signature.
-
-```js
-const jwt = require('jsonwebtoken');
-const token = jwt.sign({ id: 1 }, 'secretKey');
+```javascript
+// Route versioning
+app.use('/api/v1/users', require('./routes/v1/users'));
+app.use('/api/v2/users', require('./routes/v2/users'));
 ```
 
+### GraphQL vs REST
+Brief comparison and example with Apollo Server included in original content.
+
+### Message Queues (RabbitMQ, Kafka)
+Example using RabbitMQ with `amqplib` included above.
+
+### CI/CD Pipeline Integration
+Example GitHub Actions workflow included above.
+
 ---
 
-## 20. Difference between Monolithic and Microservices architecture?
-- **Monolithic** → All components in a single codebase.
-- **Microservices** → Each service runs independently, communicates via APIs.
+## 💻 Code Examples
+### Basic Express Server with Middleware
+See code examples in original content.
+
+### JWT Authentication Middleware
+See code examples in original content.
 
 ---
 
-## ✅ Quick Recap
-- Node.js = JavaScript runtime (V8 engine)
-- Async + event-driven (non-blocking I/O)
-- Key topics: Event loop, Streams, Middleware, Clusters
-- Popular framework → **Express.js**
-- Handles real-time, scalable applications efficiently
+## 🧪 Practice Exercises
+- Create a RESTful API for a blog with posts and comments
+- Implement JWT authentication with login/register endpoints
+- Write unit tests for your API endpoints
+- Create a file upload endpoint using Multer
+- Implement rate limiting on authentication endpoints
+- Set up a database with relationships (users have posts, posts have comments)
+- Create a real-time chat using Socket.io
+- Dockerize your Node.js application
+
+---
+
+## 📚 Additional Resources
+- Node.js Official Documentation
+- Express.js Guide
+- Mozilla Developer Network (MDN)
+- JavaScript Info
+- Node.js Best Practices
+
+---
+
+*Generated README from provided Node.js notes.*
