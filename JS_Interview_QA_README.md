@@ -217,35 +217,6 @@ function throttle(fn, limit) {
 ```
 
 ---
-
-## 🧪 Practice Questions
-
-1. Explain the difference between `null` and `undefined`.  
-2. What are arrow functions and how are they different from regular functions?  
-3. How does JavaScript handle type coercion?  
-4. Explain `call`, `apply`, and `bind`.  
-5. How does `async/await` improve readability over promises?  
-6. What is the difference between `map`, `filter`, and `reduce`?  
-7. What is the difference between shallow copy and deep copy in JS?  
-8. How do you handle errors in async/await?  
-
----
-
-## 📚 Additional Resources
-- [MDN JavaScript Guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-- [ECMAScript Specification](https://tc39.es/ecma262/)
-- [JavaScript.info](https://javascript.info/)
-- [Eloquent JavaScript](https://eloquentjavascript.net/)
-
----
-
-*Generated README with JavaScript Interview Q&A.*
-
-
----
-
-## ❓ Extra Q&A
-
 ### Q: Explain the difference between `null` and `undefined`.
 - `undefined`: A variable has been declared but not assigned a value.  
 - `null`: An assigned value that represents "no value" or "empty".  
