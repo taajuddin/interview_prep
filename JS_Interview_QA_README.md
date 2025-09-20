@@ -240,3 +240,106 @@ function throttle(fn, limit) {
 ---
 
 *Generated README with JavaScript Interview Q&A.*
+
+
+---
+
+## ❓ Extra Q&A
+
+### Q: Explain the difference between `null` and `undefined`.
+- `undefined`: A variable has been declared but not assigned a value.  
+- `null`: An assigned value that represents "no value" or "empty".  
+
+```javascript
+let a;
+console.log(a); // undefined
+let b = null;
+console.log(b); // null
+```
+
+### Q: What are arrow functions and how are they different from regular functions?
+- Shorter syntax for writing functions.  
+- Do not have their own `this`, `arguments`, `super`, or `new.target`.  
+- Cannot be used as constructors.  
+
+```javascript
+const add = (x, y) => x + y;
+```
+
+### Q: How does JavaScript handle type coercion?
+JavaScript automatically converts values from one type to another when required.  
+- Implicit coercion: `"5" * 2 → 10`  
+- Explicit coercion: `Number("5") → 5`  
+
+### Q: Explain `call`, `apply`, and `bind`.
+- `call`: Invokes a function with a given `this` and arguments passed individually.  
+- `apply`: Similar to `call`, but arguments are passed as an array.  
+- `bind`: Returns a new function with `this` permanently bound.  
+
+```javascript
+function greet(greeting) {
+  console.log(`${greeting}, ${this.name}`);
+}
+const person = { name: "Alice" };
+greet.call(person, "Hello");
+greet.apply(person, ["Hi"]);
+const bound = greet.bind(person);
+bound("Hey");
+```
+
+### Q: How does `async/await` improve readability over promises?
+- Makes async code look synchronous.  
+- Easier to read and debug than chained `.then()` calls.  
+
+```javascript
+async function fetchData() {
+  try {
+    const res = await fetch("/api");
+    const data = await res.json();
+    console.log(data);
+  } catch (err) {
+    console.error(err);
+  }
+}
+```
+
+### Q: What is the difference between `map`, `filter`, and `reduce`?
+- `map`: Transforms each element → returns a new array.  
+- `filter`: Selects elements based on condition → returns a new array.  
+- `reduce`: Accumulates values → returns a single value.  
+
+```javascript
+const arr = [1, 2, 3, 4];
+console.log(arr.map(x => x * 2));     // [2, 4, 6, 8]
+console.log(arr.filter(x => x % 2)); // [1, 3]
+console.log(arr.reduce((a, b) => a + b, 0)); // 10
+```
+
+### Q: What is the difference between shallow copy and deep copy in JS?
+- **Shallow copy**: Copies only the first level; nested objects share references.  
+- **Deep copy**: Creates entirely new nested objects.  
+
+```javascript
+const obj = { a: 1, b: { c: 2 } };
+const shallow = { ...obj };
+shallow.b.c = 99; 
+console.log(obj.b.c); // 99 (affected)
+
+const deep = JSON.parse(JSON.stringify(obj));
+deep.b.c = 42;
+console.log(obj.b.c); // 99 (not affected)
+```
+
+### Q: How do you handle errors in async/await?
+Use `try...catch` blocks to handle errors gracefully.  
+
+```javascript
+async function getUser() {
+  try {
+    const res = await fetch("/user");
+    return await res.json();
+  } catch (err) {
+    console.error("Error fetching user:", err);
+  }
+}
+```
