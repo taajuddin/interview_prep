@@ -3,6 +3,7 @@
 
 # Documentation Index
 - [Javascript Coding Docs](/javascriptCoding.md)
+- [Javascript QA Docs](/JS_Interview_QA_README.md)
 - [Reactjs InterviewQuestion Docs](/reactjs_interview_questions.md)
 - [Redux Interview questions Docs](/redux_interview_questions.md)
 - [Nodejs Interview questions Docs](/nodejs_interview_questions.md)
