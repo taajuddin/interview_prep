@@ -19,7 +19,9 @@ This repository contains solutions to common JavaScript coding challenges with e
 11. [Factorial of N](#11-factorial-of-n)
 12. [Palindrome Check](#12-palindrome-check)
 13. [Finding the second largest element in an array](#13-Finding-the-second-largest-element-in-an-array)
-14. [Finding the second smallest element in an array](#13-Finding-the-second-smallest-element-in-an-array)
+14. [Finding the second smallest element in an array](#14-Finding-the-second-smallest-element-in-an-array)
+15. [Anagram checking (are two strings anagrams of each other?](#15-Anagram-checking)
+16. [Write a function to find the first non-repeating character in a string](#16.Write-a-function-to-find-the-first-non-repeating character-in-a-string)
 ---
 
 ## 1. Flatten Array
@@ -303,6 +305,62 @@ console.log("Second Smallest:", second); // 8
 ```
 
 ---
+
+---
+
+## 15. Anagram checking (are two strings anagrams of each other?
+
+```js
+function areAnagrams(str1, str2) {
+  // Convert to lowercase
+  str1 = str1.toLowerCase().split(' ').join('');
+  str2 = str2.toLowerCase().split(' ').join('');
+
+  if (str1.length !== str2.length) return false;
+
+  return str1.split('').sort().join('') === str2.split('').sort().join('');
+}
+
+console.log(areAnagrams("listen", "silent")); // true
+console.log(areAnagrams("hello", "world"));   // false
+```
+
+---
+
+## 16. Write a function to find the first non-repeating character in a string
+```
+Example: Input: "infosys" Output: 'i' (because 'i' is the first character that does not repeat). 
+Input: "aabbcc" 
+Output: null or a message indicating all characters repeat.
+```
+
+```js
+function firstNonRepeatingChar(str) {
+  let count = {};
+
+  // Count frequency of each character
+  for (let char of str) {
+    count[char] = (count[char] || 0) + 1;
+  }
+
+  // Find the first character with frequency 1
+  for (let char of str) {
+    if (count[char] === 1) {
+      return char;
+    }
+  }
+
+  return null; // if no unique character
+}
+
+// Test cases
+console.log(firstNonRepeatingChar("infosys")); // 'i'
+console.log(firstNonRepeatingChar("aabbcc"));  // null
+
+```
+
+---
+
 
 ### 🚀 Author
 -Md Taaj Uddin
