@@ -20,8 +20,8 @@ This repository contains solutions to common JavaScript coding challenges with e
 12. [Palindrome Check](#12-palindrome-check)
 13. [Finding the second largest element in an array](#13-Finding-the-second-largest-element-in-an-array)
 14. [Finding the second smallest element in an array](#14-Finding-the-second-smallest-element-in-an-array)
-15. [Anagram checking (are two strings anagrams of each other?](#15-Anagram-checking)
-16. [Write a function to find the first non-repeating character in a string](#16.Write-a-function-to-find-the-first-non-repeating character-in-a-string)
+15. [Anagram checking are two strings anagrams of each other?](#15-Anagram-checking-are-two-strings-anagrams-of-each-other)
+16. [Write a function to find the first non-repeating character in a string](#16.Write-a-function-to-find-the-first-non-repeating-character-in-a-string)
 ---
 
 ## 1. Flatten Array
