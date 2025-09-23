@@ -18,7 +18,8 @@ This repository contains solutions to common JavaScript coding challenges with e
 10. [Create Hashtag from String](#10-create-hashtag-from-string)
 11. [Factorial of N](#11-factorial-of-n)
 12. [Palindrome Check](#12-palindrome-check)
-
+13. [Finding the second largest element in an array](#13-Finding-the-second-largest-element-in-an-array)
+14. [Finding the second smallest element in an array](#13-Finding-the-second-smallest-element-in-an-array)
 ---
 
 ## 1. Flatten Array
@@ -260,6 +261,45 @@ function palindrome(str){
 
 console.log(palindrome('madam')); // true
 console.log(palindrome('hello')); // false
+```
+
+---
+---
+
+## 13. Finding the second largest element in an array
+
+```js
+let arr = [10, 4, 8, 22, 15];
+
+let first = 0, second = 0;
+for (let num of arr) {
+  if (num > first) {
+    second = first;
+    first = num;
+  } else if (num > second && num < first) {
+    second = num;
+  }
+}
+console.log("Second Largest:", second); // 15
+```
+
+---
+
+## 14. Finding the second smallest element in an array
+
+```js
+let arr2 = [10, 4, 8, 22, 15];
+
+let first = 0, second = 0;
+for (let num of arr2) {
+  if (num < first) {
+    second = first;
+    first = num;
+  } else if (num < second && num > first) {
+    second = num;
+  }
+}
+console.log("Second Smallest:", second); // 8
 ```
 
 ---
