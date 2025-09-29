@@ -734,28 +734,108 @@ function useFetch(url, opts) {
 ## Basic & Frequently Asked JavaScript Questions
 
 ### 1) `call`, `apply`, `bind` + Polyfill
-```js
-function greet(g1, g2) { return `${g1} ${this.name} ${g2}`; }
-const ctx = { name: "Ada" };
-greet.call(ctx, "Hi", "!");     // "Hi Ada !"
-greet.apply(ctx, ["Hello", "."]); // "Hello Ada ."
-const hiAda = greet.bind(ctx, "Hi"); hiAda("++"); // "Hi Ada ++"
+**1. call() Method**
+Changes this context and immediately executes function
 
-// Polyfills (simplified)
-Function.prototype.myCall = function(ctx, ...args) {
-  ctx = ctx ?? globalThis; const sym = Symbol();
-  ctx[sym] = this; const out = ctx[sym](...args); delete ctx[sym]; return out;
+```js
+javascript
+function greet(message) {
+  console.log(`${message}, ${this.name}!`);
+}
+
+const person = { name: 'John' };
+
+// Using call
+greet.call(person, 'Hello'); // "Hello, John!"
+```
+**2. apply() Method**
+Similar to call but takes arguments as array
+```js
+javascript
+function introduce(message, emoji) {
+  console.log(`${message} ${this.name} ${emoji}`);
+}
+
+const person = { name: 'Alice' };
+// Using apply
+introduce.apply(person, ['Hi, I am', '👋']); // "Hi, I am Alice 👋"
+```
+**3. bind() Method**
+Returns a new function with bound this context
+```js
+javascript
+function sayAge() {
+  console.log(`${this.name} is ${this.age} years old`);
+}
+
+const person = { name: 'Bob', age: 25 };
+
+// Using bind
+const boundFunction = sayAge.bind(person);
+boundFunction(); // "Bob is 25 years old"
+```
+**Polyfills
+call() Polyfill**
+```js
+javascript
+Function.prototype.myCall = function(context = {}, ...args) {
+  context.fn = this; // 'this' is the function
+  const result = context.fn(...args);
+  delete context.fn;
+  return result;
 };
-Function.prototype.myApply = function(ctx, args=[]) {
-  ctx = ctx ?? globalThis; const sym = Symbol();
-  ctx[sym] = this; const out = ctx[sym](...args); delete ctx[sym]; return out;
+
+// Usage
+greet.myCall(person, 'Hello'); // Works same as call
+apply() Polyfill
+javascript
+Function.prototype.myApply = function(context = {}, args = []) {
+  context.fn = this;
+  const result = context.fn(...args);
+  delete context.fn;
+  return result;
 };
-Function.prototype.myBind = function(ctx, ...preset) {
-  const fn = this;
-  return function bound(...rest) {
-    return fn.apply(this instanceof bound ? this : ctx, [...preset, ...rest]);
+
+// Usage
+introduce.myApply(person, ['Hi', '👋']);
+bind() Polyfill
+javascript
+Function.prototype.myBind = function(context = {}, ...bindArgs) {
+  const originalFunc = this;
+  
+  return function(...callArgs) {
+    return originalFunc.apply(context, [...bindArgs, ...callArgs]);
   };
 };
+
+// Usage
+const boundFunc = sayAge.myBind(person);
+boundFunc();
+```
+**Key Differences Summary**
+Method	Execution	Arguments	Returns
+call()	Immediate	Comma separated	Function result
+apply()	Immediate	Array	Function result
+bind()	Later	Comma separated	New function
+**Real-world Example**
+```js
+const payment = {
+  amount: 100,
+  processFee(percentage, currency) {
+    const fee = this.amount * (percentage / 100);
+    console.log(`Fee: ${currency}${fee}`);
+  }
+};
+
+const order = { amount: 500 };
+
+// Different ways to use payment method on order
+payment.processFee.call(order, 10, '$');    // "Fee: $50"
+payment.processFee.apply(order, [10, '$']); // "Fee: $50"
+
+const boundProcess = payment.processFee.bind(order, 10);
+boundProcess('€'); // "Fee: €50"
+
 ```
 
 ### 2) Flatten Array (No `Array.flat`)
