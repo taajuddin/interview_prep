@@ -779,110 +779,64 @@ readStream.pipe(writeStream);
 
 Use **WebSockets (Socket.IO)** for chat, notifications.
 ```js
-// Backend - Multer for file uploads
-const multer = require('multer');
-const path = require('path');
+// server.js (or index.js)
 
-// Configure storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: (req, file, cb) => {
-    const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueName + path.extname(file.originalname));
+// 1. Setup Express and HTTP Server
+const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io'); // Import the Socket.IO Server
+const app = express();
+
+// Create a standard Node.js HTTP server instance
+const server = http.createServer(app); 
+
+// 2. Configure Socket.IO
+// Attach Socket.IO to the HTTP server.
+// 'cors' is crucial for connecting a frontend (e.g., React on port 3000)
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000", // Allow connection from React dev server
+    methods: ["GET", "POST"]
   }
 });
 
-// File filter
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith('image/')) {
-    cb(null, true);
-  } else {
-    cb(new Error('Only image files are allowed'), false);
-  }
-};
+// 3. Socket.IO Connection Logic
+// This block handles new client connections and real-time events.
+io.on('connection', (socket) => {
+  const userId = socket.id.substring(0, 4); // Simple unique ID for demo
 
-const upload = multer({ 
-  storage, 
-  fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
-});
+  console.log(`User connected: ${userId}`);
 
-// Upload route
-app.post('/api/upload', upload.single('image'), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No file uploaded' });
-    }
+  // 3a. Handle a 'chat message' event from a client
+  socket.on('chat message', (msg) => {
+    // Log the message on the server
+    console.log(`Message from ${userId}: ${msg}`);
     
-    // Save file info to database
-    const fileRecord = new File({
-      filename: req.file.filename,
-      originalName: req.file.originalname,
-      path: req.file.path,
-      size: req.file.size,
-      uploadedBy: req.user.id
+    // 3b. Broadcast the message to ALL connected clients
+    // 'io.emit' sends the data to everyone, including the sender
+    io.emit('chat message', {
+      user: userId,
+      text: msg,
+      timestamp: new Date().toLocaleTimeString()
     });
-    
-    await fileRecord.save();
-    
-    res.json({
-      message: 'File uploaded successfully',
-      file: {
-        id: fileRecord._id,
-        filename: fileRecord.filename,
-        url: `/uploads/${fileRecord.filename}`
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  });
+
+  // 3c. Handle 'notification' logic (e.g., when a user joins or disconnects)
+  socket.broadcast.emit('notification', `${userId} has joined the chat.`);
+  // 'socket.broadcast.emit' sends the data to everyone EXCEPT the sender
+
+  // 3d. Handle disconnection
+  socket.on('disconnect', () => {
+    console.log(`User disconnected: ${userId}`);
+    io.emit('notification', `${userId} has left the chat.`);
+  });
 });
 
-// Frontend - React file upload
-function FileUpload() {
-  const [uploading, setUploading] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
-  
-  const handleFileSelect = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
-  
-  const handleUpload = async () => {
-    if (!selectedFile) return;
-    
-    setUploading(true);
-    const formData = new FormData();
-    formData.append('image', selectedFile);
-    
-    try {
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      
-      const result = await response.json();
-      console.log('Upload success:', result);
-    } catch (error) {
-      console.error('Upload failed:', error);
-    } finally {
-      setUploading(false);
-    }
-  };
-  
-  return (
-    <div>
-      <input type="file" onChange={handleFileSelect} />
-      <button onClick={handleUpload} disabled={uploading || !selectedFile}>
-        {uploading ? 'Uploading...' : 'Upload'}
-      </button>
-    </div>
-  );
-}
+// 4. Start the Server
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => { // Use 'server.listen' NOT 'app.listen'
+  console.log(`Server running on port ${PORT}`);
+});
 ```
 
 ------------------------------------------------------------------------
