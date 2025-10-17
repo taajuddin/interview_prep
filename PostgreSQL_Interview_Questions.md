@@ -1,4 +1,4 @@
-# PostgreSQL Interview Questions and Answers (For Backend Developers – 5 Years Experience)
+# PostgreSQL Interview Questions and Answers
 
 This document provides PostgreSQL interview questions and answers tailored for backend developers with 5 years of experience.
 
