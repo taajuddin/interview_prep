@@ -290,18 +290,23 @@ console.log(palindrome('hello')); // false
 ## 13. Finding the second largest element in an array
 
 ```js
-let arr = [10, 4, 8, 22, 15];
+function findLarget(a){
+    let first=0, second=0;
 
-let first = 0, second = 0;
-for (let num of arr) {
-  if (num > first) {
-    second = first;
-    first = num;
-  } else if (num > second && num < first) {
-    second = num;
-  }
+    for(let i=0; i<a.length; i++){
+        if(a[i] > first){
+            second= first
+            first= a[i]
+
+        }else if(a[i] > second && a[i] < first){
+            second= a[i]
+        }
+    }
+    return second
+    
 }
-console.log("Second Largest:", second); // 15
+
+console.log(findLarget([54,23,76,89]))
 ```
 
 ---
@@ -309,18 +314,22 @@ console.log("Second Largest:", second); // 15
 ## 14. Finding the second smallest element in an array
 
 ```js
-let arr2 = [10, 4, 8, 22, 15];
+function findSecondSmallest(a) {
+  let first = Infinity, second = Infinity;
 
-let first = 0, second = 0;
-for (let num of arr2) {
-  if (num < first) {
-    second = first;
-    first = num;
-  } else if (num < second && num > first) {
-    second = num;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] < first) {
+      second = first;
+      first = a[i];
+    } else if (a[i] < second && a[i] !== first) {
+      second = a[i];
+    }
   }
+
+  return second;
 }
-console.log("Second Smallest:", second); // 8
+
+console.log(findSecondSmallest([54, 23, 76, 89])); // 👉 54
 ```
 
 ---
