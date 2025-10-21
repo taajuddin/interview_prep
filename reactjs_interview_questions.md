@@ -180,6 +180,131 @@ const memoizedFn = useCallback(() => handleClick(id), [id]);
 ```
 
 ---
+## ⚛️ useMemo in React
+
+### 🧠 Definition
+`useMemo` is a React Hook that **memoizes the result of a calculation** — meaning it **caches the computed value** and only re-calculates it when one of its dependencies changes.
+
+It is mainly used to **optimize expensive calculations** or **prevent unnecessary re-computations** on every render.
+
+---
+## ⚛️ useMemo in React
+
+### 🧠 Definition
+`useMemo` is a React Hook that **memoizes the result of a calculation** — meaning it **caches the computed value** and only re-calculates it when one of its dependencies changes.
+It is mainly used to **optimize expensive calculations** or **prevent unnecessary re-computations** on every render.
+
+---
+
+### 🔹 Example 1: With `useMemo`
+
+```jsx
+import React, { useState, useMemo } from "react";
+
+function ExpensiveCalculation() {
+  const [count, setCount] = useState(0);
+  const [text, setText] = useState("");
+
+  // ✅ Memoize the expensive calculation
+  const expensiveValue = useMemo(() => {
+    console.log("Calculating...");
+    let total = 0;
+    for (let i = 0; i < 100000000; i++) {
+      total += i;
+    }
+    return total + count;
+  }, [count]); // Only re-run when `count` changes
+
+  return (
+    <div>
+      <h2>Expensive Value: {expensiveValue}</h2>
+      <button onClick={() => setCount(count + 1)}>Increment Count</button>
+      <input
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Type something..."
+      />
+    </div>
+  );
+}
+
+export default ExpensiveCalculation;
+```
+## 🧩 Explanation:
+- useMemo stores the result of the expensive calculation.
+- When you type in the input, React re-renders, but the cached value is used.
+- The calculation only re-runs when count changes.
+# ⚡ Summary Table
+| Scenario          | Computation Runs On Every Render? | Memoized Value? | Explanation                        |
+| ----------------- | --------------------------------- | --------------- | ---------------------------------- |
+| Without `useMemo` | ✅ Yes                             | ❌ No            | Function runs even when not needed |
+| With `useMemo`    | ❌ No (only on dependency change)  | ✅ Yes           | Cached value reused                |
+
+# 🧩 Key Takeaway
+
+- useMemo caches the result of a function (a value).
+- It re-computes only when dependencies change.
+- Great for expensive calculations or derived state.
+# ⚡ Avoid overusing it — use only when you face actual performance issues.
+
+
+## ⚛️ useCallback in React
+
+### 🧠 Definition
+`useCallback` is a React Hook that **memoizes a function**, returning the **same function reference** across re-renders — unless its dependencies change.
+
+This helps prevent **unnecessary re-renders**, especially when passing functions as props to child components.
+
+---
+
+### 🔹 Example 1: useCallback With `React.memo`
+
+```jsx
+import React, { useState, useCallback } from "react";
+const ChildButton= React.memo(({ onClick }) {
+  console.log("Child rendered");
+  return <button onClick={onClick}>Click Me</button>;
+})
+function Parent() {
+  const [count, setCount] = useState(0);
+  const [text, setText] = useState("");
+
+  // ✅ useCallback keeps the same function reference across renders
+  const handleClick = useCallback(() => {
+    setCount((prev) => prev + 1);
+  }, []);
+
+  return (
+    <div>
+      <h2>Count: {count}</h2>
+      <ChildButton onClick={handleClick} />
+      <input
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Type..."
+      />
+    </div>
+  );
+}
+
+export default Parent;
+```
+## 🧩 Explanation:
+- Now the child is wrapped with React.memo, which skips re-rendering if props haven’t changed.
+- Since useCallback keeps the same function reference, React.memo sees no prop change → ✅ Child does not re-render.
+## SUMMARY TABLE
+```
+| Scenario                     | Function Reference | Child Re-renders?    | Explanation                                   |
+| ---------------------------- | ------------------ | -----------------    | --------------------------------------------- |
+| No optimization              | ❌ New each render  | ✅ Yes             | Every re-render creates new function          |
+| Only `useCallback`           | ✅ Same             | ✅ Yes             | Function stable but React doesn’t skip render |
+| Only `React.memo`            | ❌ New each render  | ✅ Yes             | Memoized component still sees prop change     |
+| `React.memo` + `useCallback` | ✅ Same             | ❌ No              | Function stable and React skips re-render     |
+```
+
+
+
+
 
 ## 13. How to optimize React performance?
 - Use **React.memo** for memoization
