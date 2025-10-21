@@ -180,13 +180,6 @@ const memoizedFn = useCallback(() => handleClick(id), [id]);
 ```
 
 ---
-## ⚛️ useMemo in React
-
-### 🧠 Definition
-`useMemo` is a React Hook that **memoizes the result of a calculation** — meaning it **caches the computed value** and only re-calculates it when one of its dependencies changes.
-
-It is mainly used to **optimize expensive calculations** or **prevent unnecessary re-computations** on every render.
-
 ---
 ## ⚛️ useMemo in React
 
@@ -294,12 +287,13 @@ export default Parent;
 - Since useCallback keeps the same function reference, React.memo sees no prop change → ✅ Child does not re-render.
 ## SUMMARY TABLE
 ```
-| Scenario                     | Function Reference | Child Re-renders?    | Explanation                                   |
-| ---------------------------- | ------------------ | -----------------    | --------------------------------------------- |
+| Scenario                     | Function Reference | Child Re-renders? | Explanation                                   |
+| ---------------------------- | ------------------ | ----------------- | --------------------------------------------- |
 | No optimization              | ❌ New each render  | ✅ Yes             | Every re-render creates new function          |
 | Only `useCallback`           | ✅ Same             | ✅ Yes             | Function stable but React doesn’t skip render |
 | Only `React.memo`            | ❌ New each render  | ✅ Yes             | Memoized component still sees prop change     |
 | `React.memo` + `useCallback` | ✅ Same             | ❌ No              | Function stable and React skips re-render     |
+
 ```
 
 
