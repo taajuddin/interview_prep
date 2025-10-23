@@ -46,6 +46,36 @@ console.log(flattenArray(arr)); // [1,2,3,4,5,6,7,8,10,11,9]
 ```
 
 ---
+# Implement a Throttle Function
+
+Not just setTimeout — you understand timing control in real UIs.
+
+💡 Code Example
+```js
+function throttle(fn, delay) {
+  let last = 0;
+  return function (...args) {
+    const now = Date.now();
+    if (now - last >= delay) {
+      fn.apply(this, args);
+      last = now;
+    }
+  };
+}
+```
+# Example: Throttled scroll listener
+```js
+window.addEventListener("scroll", throttle(() => {
+  console.log("Scroll event triggered");
+}, 500));
+```
+# 🧠 Explain in interviews:
+
+-Use debounce when you want to delay actions until the user stops (like search typing).
+-Use throttle for continuous but limited actions (like scroll or resize).
+
+
+---
 
 ## 2. Find All Prime Numbers up to Nth
 
