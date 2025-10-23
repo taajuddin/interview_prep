@@ -309,6 +309,288 @@ export default Parent;
 
 ---
 
+### **1️⃣ What is React? Describe its core benefits.**
+React is a **JavaScript library** for building **user interfaces**, mainly **single-page applications (SPAs)**. It uses a **component-based architecture** and **Virtual DOM** for efficient rendering.
+
+**Core benefits:**
+- Fast rendering (Virtual DOM)
+- Reusable components
+- One-way data flow
+- Strong community support
+---
+
+### **2️⃣ Difference between React Node, React Element, and React Component**
+| Term | Description |
+|------|--------------|
+| **React Element** | Object describing what to render (via JSX or `React.createElement`) |
+| **React Node** | Anything React can render — string, number, element, etc. |
+| **React Component** | Function or class returning React elements |
+
+```jsx
+const element = <div>Hello</div>; // React Element
+const node = "Hello"; // React Node
+function MyComp() { return <div>Hi</div>; } // React Component
+```
+
+---
+
+### **3️⃣ What is JSX, and how does it get compiled?**
+JSX is **syntactic sugar** for `React.createElement()`. It’s compiled by Babel into JavaScript objects.
+
+```jsx
+const element = <h1>Hello</h1>;
+// Compiled to:
+const element = React.createElement('h1', null, 'Hello');
+```
+
+---
+
+### **4️⃣ Difference between state and props**
+| State | Props |
+|-------|--------|
+| Internal, mutable data | External, read-only data |
+| Managed inside component | Passed from parent |
+| Updated with `setState` or `useState` | Immutable |
+
+```jsx
+function Child({ name }) { return <p>{name}</p>; }
+function Parent() {
+  const [name, setName] = useState('Taaj');
+  return <Child name={name} />;
+}
+```
+
+---
+
+### **5️⃣ Why do we use the key prop in React lists?**
+Keys help React identify which items changed, improving re-render efficiency.
+
+```jsx
+{items.map(item => <li key={item.id}>{item.name}</li>)}
+```
+
+---
+
+### **6️⃣ What happens when you use array indices as keys?**
+It can cause **incorrect re-renders** and **UI inconsistencies** when the list order changes.
+
+---
+
+### **7️⃣ Controlled vs Uncontrolled Components**
+| Controlled | Uncontrolled |
+|-------------|--------------|
+| Managed by React state | Managed by the DOM |
+| Uses `value` + `onChange` | Uses `defaultValue` + `ref` |
+
+```jsx
+// Controlled
+<input value={name} onChange={e => setName(e.target.value)} />
+
+// Uncontrolled
+<input defaultValue="Taaj" ref={inputRef} />
+```
+
+---
+
+### **8️⃣ What are the pitfalls of Context API?**
+- Triggers re-renders for all consumers on value change  
+- Harder to debug  
+- May be overused instead of simpler prop drilling
+
+---
+
+### **9️⃣ Why were React Hooks introduced?**
+Hooks allow **state and lifecycle** logic in **functional components**, improving code reuse and readability.
+
+---
+
+### **🔟 Rules of Hooks and why are they important**
+**Rules:**
+1. Call Hooks **at the top level** (not inside loops or conditions)
+2. Call Hooks **only inside React components or custom Hooks**
+
+They ensure consistent Hook ordering during renders.
+
+---
+
+### **1️⃣1️⃣ useEffect vs useLayoutEffect**
+| useEffect | useLayoutEffect |
+|------------|----------------|
+| Runs **after paint** | Runs **before paint** |
+| Non-blocking | Blocking |
+| Used for async tasks | Used for layout measurement |
+
+```jsx
+useEffect(() => console.log('Async side effect'));
+useLayoutEffect(() => console.log('Synchronous layout fix'));
+```
+
+---
+
+### **1️⃣2️⃣ Why use the callback form of setState()?**
+To avoid **stale state** when the new state depends on the previous value.
+
+```jsx
+setCount(prev => prev + 1);
+```
+
+---
+
+### **1️⃣3️⃣ How does the dependency array in useEffect work?**
+React re-runs the effect only when dependencies change.
+
+```jsx
+useEffect(() => console.log('Runs when count changes'), [count]);
+```
+
+---
+
+### **1️⃣4️⃣ When to use useRef vs state**
+| useRef | state |
+|--------|--------|
+| Mutable value without re-render | Triggers re-render |
+
+```jsx
+const ref = useRef(0); // Won't trigger re-render
+const [count, setCount] = useState(0); // Will trigger
+```
+
+---
+
+### **1️⃣5️⃣ Difference between useCallback and useMemo**
+| Hook | Returns | Used for |
+|------|----------|----------|
+| useCallback | Memoized function | Prevents function recreation |
+| useMemo | Memoized value | Expensive calculations |
+
+```jsx
+const memoFn = useCallback(() => doSomething(count), [count]);
+const memoValue = useMemo(() => heavyCalc(count), [count]);
+```
+
+---
+
+### **1️⃣6️⃣ When to use useReducer instead of useState**
+Use for **complex state logic** or **multiple sub-states**.
+
+```jsx
+function reducer(state, action) {
+  switch(action.type) {
+    case 'inc': return { count: state.count + 1 };
+  }
+}
+const [state, dispatch] = useReducer(reducer, { count: 0 });
+```
+
+---
+
+### **1️⃣7️⃣ What does useId do in React 18+?**
+Generates a unique, **consistent ID** across client and server for accessibility and forms.
+
+```jsx
+const id = useId();
+<label htmlFor={id}>Name</label>
+<input id={id} />
+```
+
+---
+
+### **1️⃣8️⃣ What triggers a re-render in React?**
+- State changes  
+- Props changes  
+- Parent re-renders  
+- Context value updates
+
+---
+
+### **1️⃣9️⃣ What is Reconciliation and how does React handle it efficiently?**
+Reconciliation is React’s **diffing algorithm** comparing Virtual DOM trees to update only changed parts of the real DOM.
+
+---
+
+### **2️⃣0️⃣ What are React Fragments, and why should you use them?**
+Fragments let you group elements without extra DOM nodes.
+
+```jsx
+return (
+  <>
+    <h1>Title</h1>
+    <p>Subtitle</p>
+  </>
+);
+```
+
+---
+
+## 🧩 Advanced Topics
+
+### **7️⃣ Error Boundaries & Logging**
+Error Boundaries catch **JavaScript errors** in React components and display fallback UIs instead of crashing.
+
+```jsx
+class ErrorBoundary extends React.Component {
+  state = { hasError: false };
+  static getDerivedStateFromError() { return { hasError: true }; }
+  componentDidCatch(error, info) { console.error(error, info); }
+  render() { return this.state.hasError ? <h2>Something went wrong.</h2> : this.props.children; }
+}
+```
+Wrap components:
+```jsx
+<ErrorBoundary>
+  <MyComponent />
+</ErrorBoundary>
+```
+
+---
+
+### **8️⃣ Micro-Frontends & Module Federation**
+**Micro-Frontends** split a large app into smaller, independently deployable apps.
+
+**Module Federation (Webpack 5):** allows sharing React components between apps dynamically.
+
+```js
+// webpack.config.js
+new ModuleFederationPlugin({
+  name: 'app1',
+  remotes: { app2: 'app2@http://localhost:3002/remoteEntry.js' },
+  exposes: { './Header': './src/Header' }
+});
+```
+
+---
+
+### **9️⃣ Security in React SPAs**
+**Common practices:**
+- Escape user input to prevent **XSS**
+- Use `dangerouslySetInnerHTML` only when necessary
+- Implement **JWT** securely (in HttpOnly cookies)
+- Validate API inputs server-side
+- Use **Helmet** for setting security headers
+
+```jsx
+import { Helmet } from 'react-helmet';
+<Helmet>
+  <meta httpEquiv="Content-Security-Policy" content="default-src 'self'" />
+</Helmet>
+```
+
+---
+
+### **🔟 A/B Testing Integration**
+A/B testing involves showing different UI variants and tracking conversions.
+
+**Approaches:**
+- Integrate tools like **Optimizely**, **Google Optimize**, or **LaunchDarkly**
+- Use feature flags to conditionally render components
+
+```jsx
+{featureFlag ? <NewButton /> : <OldButton />}
+```
+
+---
+
+
 ## ✅ Quick Recap
 - React = UI library with Virtual DOM
 - Uses **components, props, state, hooks**
