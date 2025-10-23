@@ -29,13 +29,14 @@ This repository contains solutions to common JavaScript coding challenges with e
 ```js
 const arr=[1,2,3,[4,5,6],7,8,[10,11],9];
 
-function flattenArray(arr) {
-    const flatten = [];
-    arr.forEach(item => {
-        if (Array.isArray(item)) {
-            flatten.push(...flattenArray(item));
-        } else {
-            flatten.push(item);
+// 1st Approach
+function flattenArray(arr) {                            |  const flat2 = arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flat2(val) : val),[] );
+    const flatten = [];                                 |  console.log(flat2) // [1,2,3,4,5,6,7,8,10,11,9]
+    arr.forEach(item => {                               |
+        if (Array.isArray(item)) {                      |
+            flatten.push(...flattenArray(item));        |
+        } else {                                        |
+            flatten.push(item);                         |
         }
     });
     return flatten;
