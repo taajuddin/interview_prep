@@ -590,6 +590,178 @@ A/B testing involves showing different UI variants and tracking conversions.
 
 ---
 
+## ⚙️ Practical Implementations
+
+### **1️⃣ Tic Tac Toe App**
+Tests **state management**, **conditional rendering**, and **winning logic**.
+
+```jsx
+function TicTacToe() {
+  const [board, setBoard] = useState(Array(9).fill(null));
+  const [isX, setIsX] = useState(true);
+
+  const handleClick = (i) => {
+    if (board[i] || calculateWinner(board)) return;
+    const newBoard = [...board];
+    newBoard[i] = isX ? 'X' : 'O';
+    setBoard(newBoard);
+    setIsX(!isX);
+  };
+
+  const winner = calculateWinner(board);
+
+  return (
+    <>
+      <h2>{winner ? `${winner} Wins!` : `Next Player: ${isX ? 'X' : 'O'}`}</h2>
+      <div className="grid grid-cols-3 w-40">
+        {board.map((v, i) => (
+          <button key={i} onClick={() => handleClick(i)} className="border h-12 w-12 text-xl">{v}</button>
+        ))}
+      </div>
+    </>
+  );
+}
+
+function calculateWinner(squares) {
+  const lines = [
+    [0,1,2], [3,4,5], [6,7,8],
+    [0,3,6], [1,4,7], [2,5,8],
+    [0,4,8], [2,4,6]
+  ];
+  for (let [a,b,c] of lines) if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) return squares[a];
+  return null;
+}
+```
+
+---
+
+### **2️⃣ Timer App**
+Tests **useEffect**, **cleanup**, and **state intervals**.
+
+```jsx
+function Timer() {
+  const [seconds, setSeconds] = useState(0);
+  const [running, setRunning] = useState(false);
+
+  useEffect(() => {
+    let interval;
+    if (running) {
+      interval = setInterval(() => setSeconds(s => s + 1), 1000);
+    }
+    return () => clearInterval(interval);
+  }, [running]);
+
+  return (
+    <>
+      <h1>{seconds}s</h1>
+      <button onClick={() => setRunning(true)}>Start</button>
+      <button onClick={() => setRunning(false)}>Stop</button>
+      <button onClick={() => setSeconds(0)}>Reset</button>
+    </>
+  );
+}
+```
+
+---
+
+### **3️⃣ Todo App**
+Simple example for **CRUD operations** with React state.
+
+```jsx
+function Todo() {
+  const [tasks, setTasks] = useState([]);
+  const [input, setInput] = useState('');
+
+  const addTask = () => setTasks([...tasks, input]);
+
+  return (
+    <>
+      <input value={input} onChange={e => setInput(e.target.value)} />
+      <button onClick={addTask}>Add</button>
+      <ul>{tasks.map((t, i) => <li key={i}>{t}</li>)}</ul>
+    </>
+  );
+}
+```
+
+---
+
+### **4️⃣ Pagination or Infinite Scroll**
+Used for **data-heavy lists** (APIs, dashboards, feeds).
+
+**Pagination Example:**
+```jsx
+const [page, setPage] = useState(1);
+useEffect(() => fetchData(page), [page]);
+```
+
+**Infinite Scroll Example:**
+```jsx
+useEffect(() => {
+  const handleScroll = () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight)
+      loadMore();
+  };
+  window.addEventListener('scroll', handleScroll);
+  return () => window.removeEventListener('scroll', handleScroll);
+}, []);
+```
+
+---
+
+### **5️⃣ Autocomplete Search**
+Tests understanding of **debouncing**, **API calls**, and **conditional rendering**.
+
+```jsx
+function Search() {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => fetch(`/api?q=${query}`).then(r => r.json()).then(setResults), 300);
+    return () => clearTimeout(timeout);
+  }, [query]);
+
+  return (
+    <>
+      <input value={query} onChange={e => setQuery(e.target.value)} />
+      <ul>{results.map(r => <li key={r.id}>{r.name}</li>)}</ul>
+    </>
+  );
+}
+```
+
+---
+
+### **6️⃣ Custom Promise.all or EventEmitter**
+Shows mastery of **asynchronous logic** and **custom event management**.
+
+**Custom Promise.all:**
+```js
+Promise.myAll = function(promises) {
+  return new Promise((resolve, reject) => {
+    let results = [], completed = 0;
+    promises.forEach((p, i) => {
+      Promise.resolve(p).then(val => {
+        results[i] = val;
+        if (++completed === promises.length) resolve(results);
+      }).catch(reject);
+    });
+  });
+};
+```
+
+**Custom EventEmitter:**
+```js
+class EventEmitter {
+  constructor() { this.events = {}; }
+  on(event, listener) { (this.events[event] ||= []).push(listener); }
+  emit(event, ...args) { (this.events[event] || []).forEach(fn => fn(...args)); }
+}
+```
+
+---
+
 
 ## ✅ Quick Recap
 - React = UI library with Virtual DOM
