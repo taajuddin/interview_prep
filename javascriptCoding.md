@@ -22,8 +22,8 @@ This repository contains solutions to common JavaScript coding challenges with e
 14. [Finding the second smallest element in an array](#14-Finding-the-second-smallest-element-in-an-array)
 15. [Anagram checking are two strings anagrams of each other?](#15-Anagram-checking-are-two-strings-anagrams-of-each-other)
 16. [Write a function to find the first non-repeating character in a string](#16.Write-a-function-to-find-the-first-non-repeating-character-in-a-string)
+17. [Memoization of fibonacci function](#17.fiboancii_with_memozation)
 ---
-
 ## 1. Flatten Array
 
 ```js
@@ -415,6 +415,54 @@ function firstNonRepeatingChar(str) {
 // Test cases
 console.log(firstNonRepeatingChar("infosys")); // 'i'
 console.log(firstNonRepeatingChar("aabbcc"));  // null
+
+```
+
+## 17.fiboancii with memozation
+```js
+function memoizedFib() {
+  const cache = {};
+
+  function fib(n) {
+    if (n <= 1) return n;
+    if (cache[n]) return cache[n];
+
+    cache[n] = fib(n - 1) + fib(n - 2);
+    return cache[n];
+  }
+
+  return fib;
+}
+
+const fib = memoizedFib();
+
+console.log(fib(10)); // Computed recursively
+console.log(fib(10)); // Retrieved instantly from cache
+###############################################################
+//2nd approach
+function memoize(fn) {
+  const cache = {}; 
+  return function(...args) {
+    const key = JSON.stringify(args);
+    if (cache[key]) {
+      console.log("Fetching from cache:", key);
+      return cache[key];
+    }
+    console.log("Calculating result:", key);
+    const result = fn(...args);
+    cache[key] = result;
+    return result;
+  };
+}
+// Expensive function
+function slowAdd(a, b) {
+  for (let i = 0; i < 1e8; i++); // Simulate heavy computation
+  return a + b;
+}
+// Memoized version
+const memoizedAdd = memoize(slowAdd);
+console.log(memoizedAdd(3, 4)); // Calculates
+console.log(memoizedAdd(3, 4)); // Fetches from cache
 
 ```
 
