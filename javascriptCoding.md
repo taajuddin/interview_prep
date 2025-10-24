@@ -23,6 +23,7 @@ This repository contains solutions to common JavaScript coding challenges with e
 15. [Anagram checking are two strings anagrams of each other?](#15-Anagram-checking-are-two-strings-anagrams-of-each-other)
 16. [Write a function to find the first non-repeating character in a string](#16.Write-a-function-to-find-the-first-non-repeating-character-in-a-string)
 17. [Memoization of fibonacci function](#17.fiboancii_with_memozation)
+18. [function Currying for infinite sum](#18.function_currying_for_infinite_sum)
 ---
 ## 1. Flatten Array
 
@@ -465,7 +466,18 @@ console.log(memoizedAdd(3, 4)); // Calculates
 console.log(memoizedAdd(3, 4)); // Fetches from cache
 
 ```
-
+### Currying Function for Infinite Sum
+```js
+function sum(x) {
+  let acc = x ?? 0;
+  function inner(y) {
+    if (y === undefined) return acc;
+    acc += y; return inner;
+  }
+  return inner;
+}
+// sum(10)(20)(30)() -> 60
+```
 ---
 
 
