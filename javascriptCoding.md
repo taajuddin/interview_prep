@@ -45,7 +45,44 @@ function flattenArray(arr) {                     |  const flat2 = arr.reduce((ac
 
 console.log(flattenArray(arr)); // [1,2,3,4,5,6,7,8,10,11,9]
 ```
+---
+# Implement promise.all functionality without using promise.all
+```js
+function myPromiseAll(promises) {
+  return new Promise((resolve, reject) => {
+    const results = [];
+    let completed = 0;
 
+    if (promises.length === 0) {
+      return resolve([]);
+    }
+
+    promises.forEach((p, index) => {
+      // Convert any non-promise value to a promise
+      Promise.resolve(p)
+        .then(value => {
+          results[index] = value;
+          completed++;
+
+          // If all promises are done → resolve
+          if (completed === promises.length) {
+            resolve(results);
+          }
+        })
+        .catch(err => reject(err)); // Reject immediately on failure
+    });
+  });
+}
+// Example
+const p1 = Promise.resolve(10);
+const p2 = 20; // Non-promise (should still work)
+const p3 = new Promise(resolve => setTimeout(() => resolve(30), 1000));
+
+myPromiseAll([p1, p2, p3])
+  .then(results => console.log("✅ Results:", results))
+  .catch(error => console.error("❌ Error:", error));
+
+```
 ---
 # Implement a Throttle Function
 
