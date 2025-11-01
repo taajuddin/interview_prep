@@ -25,6 +25,7 @@ This repository contains solutions to common JavaScript coding challenges with e
 17. [Write a function to find the first non-repeating character in a string](#16.Write-a-function-to-find-the-first-non-repeating-character-in-a-string)
 18. [Memoization of fibonacci function](#17.fiboancii_with_memozation)
 19. [function Currying for infinite sum](#18.function_currying_for_infinite_sum)
+20. [remove Duplicate from array of Object](#19.remove_duplicate_from_Array_of_object)
 ---
 ## 1. Flatten Array
 
@@ -515,6 +516,28 @@ function sum(x) {
   return inner;
 }
 // sum(10)(20)(30)() -> 60
+```
+### remove duplicate from array of object
+```js
+const data=[{a:'1',b:'2'},{c:'3',d:'4'},{a:'1',b:'2'}]
+
+function removeDupObj(data){
+    let cache={}
+    const newData=[]
+    for(let i=0;i<data.length;i++){
+        const obj=data[i]
+        const cacheKey=`${JSON.stringify(obj)}`
+        if(!cache[cacheKey]) {
+            newData.push(obj)
+            cache[cacheKey]=obj
+        }
+        
+    }
+    return newData
+}
+
+console.log(removeDupObj(data)) // [ { a: '1', b: '2' }, { c: '3', d: '4' } ]
+
 ```
 ---
 
