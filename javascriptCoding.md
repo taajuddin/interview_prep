@@ -425,11 +425,7 @@ console.log(removeDupObj(data))
 ```js
 const data = ["timBrook", "alexCary", "ericWalker"]
 const newValue = data.map(item => {
-  const formatted =
-    item.charAt(0).toUpperCase() +
-    item
-      .slice(1)
-      .replace(/([A-Z])/g, ' $1');
+  const formatted =item.charAt(0).toUpperCase() +item.slice(1).replace(/([A-Z])/g, ' $1');
   return formatted.trim();
 });
 console.log(newValue); // ["Tim Brook", "Alex Cary", "Eric Walker"]
