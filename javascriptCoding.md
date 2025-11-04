@@ -7,40 +7,40 @@ This repository contains solutions to common JavaScript coding challenges with e
 ## 📑 Table of Contents
 
 1. [Flatten Array](#1-flatten-array)
-2. [Implement Promise.all without using promise.all method](#2-Implement_promise.all_functionality_without_using_promise.all_method)
-3. [Find All Prime Numbers up to Nth](#2-find-all-prime-numbers-up-to-nth)
-4. [Merge Arrays of Objects by id](#3-merge-arrays-of-objects-by-id)
-5. [Find the Missing Number (Odd Sequence)](#4-find-the-missing-number-odd-sequence)
-6. [Find N Largest Numbers](#5-find-n-largest-numbers)
-7. [Convert Number to Roman Numerals](#6-convert-number-to-roman-numerals)
-8. [Find Duplicates in Array](#7-find-duplicates-in-array)
-9. [Remove Duplicates from String](#8-remove-duplicates-from-string)
-10. [Count Occurrences of Characters](#9-count-occurrences-of-characters)
-11. [Create Hashtag from String](#10-create-hashtag-from-string)
-12. [Factorial of N](#11-factorial-of-n)
-13. [Palindrome Check](#12-palindrome-check)
-14. [Finding the second largest element in an array](#13-Finding-the-second-largest-element-in-an-array)
-15. [Finding the second smallest element in an array](#14-Finding-the-second-smallest-element-in-an-array)
-16. [Anagram checking are two strings anagrams of each other?](#15-Anagram-checking-are-two-strings-anagrams-of-each-other)
-17. [Write a function to find the first non-repeating character in a string](#16.Write-a-function-to-find-the-first-non-repeating-character-in-a-string)
-18. [Memoization of fibonacci function](#17.fiboancii_with_memozation)
-19. [function Currying for infinite sum](#18.function_currying_for_infinite_sum)
-20. [remove Duplicate from array of Object](#19.remove_duplicate_from_Array_of_object)
-21. [Split the data when captial Lette](#20.Split_the_data_when_captialLetter_with_space_and_first_character_should_be_upperCase)
----
-## 1. Flatten Array
+2. [Implement Promise.all without using promise.all method](#2-implement-promiseall-without-using-promiseall-method)
+3. [Find All Prime Numbers up to Nth](#3-find-all-prime-numbers-up-to-nth)
+4. [Merge Arrays of Objects by id](#4-merge-arrays-of-objects-by-id)
+5. [Find the Missing Number (Odd Sequence)](#5-find-the-missing-number-odd-sequence)
+6. [Find N Largest Numbers](#6-find-n-largest-numbers)
+7. [Convert Number to Roman Numerals](#7-convert-number-to-roman-numerals)
+8. [Find Duplicates in Array](#8-find-duplicates-in-array)
+9. [Remove Duplicates from String](#9-remove-duplicates-from-string)
+10. [Count Occurrences of Characters](#10-count-occurrences-of-characters)
+11. [Create Hashtag from String](#11-create-hashtag-from-string)
+12. [Factorial of N](#12-factorial-of-n)
+13. [Palindrome Check](#13-palindrome-check)
+14. [Finding the second largest element in an array](#14-finding-the-second-largest-element-in-an-array)
+15. [Finding the second smallest element in an array](#15-finding-the-second-smallest-element-in-an-array)
+16. [Anagram checking are two strings anagrams of each other?](#16-anagram-checking-are-two-strings-anagrams-of-each-other)
+17. [Write a function to find the first non-repeating character in a string](#17-write-a-function-to-find-the-first-non-repeating-character-in-a-string)
+18. [Memoization of fibonacci function](#18fiboancii-with-memozation)
+19. [function Currying for infinite sum](#19-currying-function-for-infinite-sum)
+20. [remove Duplicate from array of Object](#20-remove-duplicate-from-array-of-object)
+21. [Split the data when captial Letter](#21-split-the-data-when-captialletter-with-space-and-first-character-should-be-uppercase)
 
+---
+
+## 1. Flatten Array
 ```js
 const arr=[1,2,3,[4,5,6],7,8,[10,11],9];
 
-// 1st Approach
-function flattenArray(arr) {                     |  const flat2 = arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flat2(val) : val),[] );
-    const flatten = [];                          |  console.log(flat2) // [1,2,3,4,5,6,7,8,10,11,9]
-    arr.forEach(item => {                        |
-        if (Array.isArray(item)) {               |
-            flatten.push(...flattenArray(item)); |
-        } else {                                 |
-            flatten.push(item);                  |
+function flattenArray(arr) {
+    const flatten = [];
+    arr.forEach(item => {
+        if (Array.isArray(item)) {
+            flatten.push(...flattenArray(item));
+        } else {
+            flatten.push(item);
         }
     });
     return flatten;
@@ -49,7 +49,8 @@ function flattenArray(arr) {                     |  const flat2 = arr.reduce((ac
 console.log(flattenArray(arr)); // [1,2,3,4,5,6,7,8,10,11,9]
 ```
 ---
-# Implement promise.all functionality without using promise.all
+
+## 2. Implement Promise.all without using promise.all method
 ```js
 function myPromiseAll(promises) {
   return new Promise((resolve, reject) => {
@@ -61,65 +62,30 @@ function myPromiseAll(promises) {
     }
 
     promises.forEach((p, index) => {
-      // Convert any non-promise value to a promise
       Promise.resolve(p)
         .then(value => {
           results[index] = value;
           completed++;
-
-          // If all promises are done → resolve
           if (completed === promises.length) {
             resolve(results);
           }
         })
-        .catch(err => reject(err)); // Reject immediately on failure
+        .catch(err => reject(err));
     });
   });
 }
-// Example
+
 const p1 = Promise.resolve(10);
-const p2 = 20; // Non-promise (should still work)
+const p2 = 20;
 const p3 = new Promise(resolve => setTimeout(() => resolve(30), 1000));
 
 myPromiseAll([p1, p2, p3])
   .then(results => console.log("✅ Results:", results))
   .catch(error => console.error("❌ Error:", error));
-
 ```
 ---
-# Implement a Throttle Function
 
-Not just setTimeout — you understand timing control in real UIs.
-
-💡 Code Example
-```js
-function throttle(fn, delay) {
-  let last = 0;
-  return function (...args) {
-    const now = Date.now();
-    if (now - last >= delay) {
-      fn.apply(this, args);
-      last = now;
-    }
-  };
-}
-```
-# Example: Throttled scroll listener
-```js
-window.addEventListener("scroll", throttle(() => {
-  console.log("Scroll event triggered");
-}, 500));
-```
-# 🧠 Explain in interviews:
-
--Use debounce when you want to delay actions until the user stops (like search typing).
--Use throttle for continuous but limited actions (like scroll or resize).
-
-
----
-
-## 2. Find All Prime Numbers up to Nth
-
+## 3. Find All Prime Numbers up to Nth
 ```js
 function isPrime(n){
     if(n<=1) return false;
@@ -148,11 +114,9 @@ function findPrimeUpToNth(n){
 
 console.log(findPrimeUpToNth(5)); // "2,3,5,7,11"
 ```
-
 ---
 
-## 3. Merge Arrays of Objects by `id`
-
+## 4. Merge Arrays of Objects by id
 ```js
 const array1=[{id:1, x:5, y:7},{id:2, x:5, y:7},{id:3,x:5, y:7}];
 const array2=[{id:3, x:9, y:11},{id:4,x:5, y:7},{id:5,x:5, y:7}];
@@ -169,13 +133,10 @@ let mergedArray=[...array1,...array2].reduce((acc, obj)=>{
 },[]);
 
 console.log(mergedArray);
-// [ {id:1,x:5,y:7}, {id:2,x:5,y:7}, {id:3,x:9,y:11}, {id:4,x:5,y:7}, {id:5,x:5,y:7} ]
 ```
-
 ---
 
-## 4. Find the Missing Number (Odd Sequence)
-
+## 5. Find the Missing Number (Odd Sequence)
 ```js
 function missingNumber(arr){
     const max=Math.max(...arr);
@@ -192,11 +153,9 @@ function missingNumber(arr){
 
 console.log(missingNumber([1,3,5,7,11])); // 9
 ```
-
 ---
 
-## 5. Find N Largest Numbers
-
+## 6. Find N Largest Numbers
 ```js
 const array=[1,2,3,4,5,7,9,8,6];
 
@@ -207,12 +166,11 @@ function largest(array, n) {
 
 console.log(largest(array,3)); // [9,8,7]
 ```
-
 ---
 
-## 6. Convert Number to Roman Numerals
-
-```jsfunction convertToRoman(num) {
+## 7. Convert Number to Roman Numerals
+```js
+function convertToRoman(num) {
   const romanMap = [
     { value: 1000, symbol: "M" },
     { value: 900, symbol: "CM" },
@@ -228,29 +186,23 @@ console.log(largest(array,3)); // [9,8,7]
     { value: 4, symbol: "IV" },
     { value: 1, symbol: "I" }
   ];
-
   let result = "";
-
   for (const { value, symbol } of romanMap) {
     while (num >= value) {
       result += symbol;
       num -= value;
     }
   }
-
   return result;
 }
 
-// Example:
-console.log(convertToRoman(7));   // Output: VII
-console.log(convertToRoman(49));  // Output: XLIX
-console.log(convertToRoman(2024)); // Output: MMXXIV
+console.log(convertToRoman(7));   // VII
+console.log(convertToRoman(49));  // XLIX
+console.log(convertToRoman(2024)); // MMXXIV
 ```
-
 ---
 
-## 7. Find Duplicates in Array
-
+## 8. Find Duplicates in Array
 ```js
 function findDuplicate(arr){
     let result=[];
@@ -266,11 +218,9 @@ function findDuplicate(arr){
 
 console.log(findDuplicate([1,2,3,4,2,5,3])); // [2,3]
 ```
-
 ---
 
-## 8. Remove Duplicates from String
-
+## 9. Remove Duplicates from String
 ```js
 function removeDuplicate(str){
     let result='';
@@ -285,11 +235,9 @@ function removeDuplicate(str){
 
 console.log(removeDuplicate('programming')); // 'progamin'
 ```
-
 ---
 
-## 9. Count Occurrences of Characters
-
+## 10. Count Occurrences of Characters
 ```js
 const string='this is me';
 
@@ -306,11 +254,9 @@ function occurenceStr(string){
 console.log(occurenceStr(string));
 // {t:1, h:1, i:2, s:2, m:1, e:1}
 ```
-
 ---
 
-## 10. Create Hashtag from String
-
+## 11. Create Hashtag from String
 ```js
 function hashtag(str){
     let result='#';
@@ -323,11 +269,9 @@ function hashtag(str){
 
 console.log(hashtag('javascript is awesome')); // '#JavascriptIsAwesome'
 ```
-
 ---
 
-## 11. Factorial of N
-
+## 12. Factorial of N
 ```js
 function factorialNumber(n){
     if(n<0) return -1;
@@ -340,11 +284,9 @@ function factorialNumber(n){
 
 console.log(factorialNumber(5)); // 120
 ```
-
 ---
 
-## 12. Palindrome Check
-
+## 13. Palindrome Check
 ```js
 function palindrome(str){
     let newStr=str.toLowerCase();
@@ -355,40 +297,30 @@ function palindrome(str){
 console.log(palindrome('madam')); // true
 console.log(palindrome('hello')); // false
 ```
-
----
 ---
 
-## 13. Finding the second largest element in an array
-
+## 14. Finding the second largest element in an array
 ```js
 function findLarget(a){
     let first=0, second=0;
-
     for(let i=0; i<a.length; i++){
         if(a[i] > first){
             second= first
             first= a[i]
-
         }else if(a[i] > second && a[i] < first){
             second= a[i]
         }
     }
     return second
-    
 }
-
 console.log(findLarget([54,23,76,89]))
 ```
-
 ---
 
-## 14. Finding the second smallest element in an array
-
+## 15. Finding the second smallest element in an array
 ```js
 function findSecondSmallest(a) {
   let first = Infinity, second = Infinity;
-
   for (let i = 0; i < a.length; i++) {
     if (a[i] < first) {
       second = first;
@@ -397,130 +329,78 @@ function findSecondSmallest(a) {
       second = a[i];
     }
   }
-
   return second;
 }
-
-console.log(findSecondSmallest([54, 23, 76, 89])); // 👉 54
+console.log(findSecondSmallest([54, 23, 76, 89])); // 54
 ```
-
 ---
 
----
-
-## 15. Anagram checking (are two strings anagrams of each other?
-
+## 16. Anagram checking are two strings anagrams of each other?
 ```js
 function areAnagrams(str1, str2) {
-  // Convert to lowercase
   str1 = str1.toLowerCase().split(' ').join('');
   str2 = str2.toLowerCase().split(' ').join('');
-
   if (str1.length !== str2.length) return false;
-
   return str1.split('').sort().join('') === str2.split('').sort().join('');
 }
-
 console.log(areAnagrams("listen", "silent")); // true
 console.log(areAnagrams("hello", "world"));   // false
 ```
-
 ---
 
-## 16. Write a function to find the first non-repeating character in a string
-```
-Example: Input: "infosys" Output: 'i' (because 'i' is the first character that does not repeat). 
-Input: "aabbcc" 
-Output: null or a message indicating all characters repeat.
-```
-
+## 17. Write a function to find the first non-repeating character in a string
 ```js
 function firstNonRepeatingChar(str) {
   let count = {};
-
-  // Count frequency of each character
   for (let char of str) {
     count[char] = (count[char] || 0) + 1;
   }
-
-  // Find the first character with frequency 1
   for (let char of str) {
     if (count[char] === 1) {
       return char;
     }
   }
-
-  return null; // if no unique character
+  return null;
 }
-
-// Test cases
 console.log(firstNonRepeatingChar("infosys")); // 'i'
 console.log(firstNonRepeatingChar("aabbcc"));  // null
-
 ```
 ---
-## 17.fiboancii with memozation
+
+## 18fiboancii with memozation
 ```js
 function memoizedFib() {
   const cache = {};
-
   function fib(n) {
     if (n <= 1) return n;
     if (cache[n]) return cache[n];
-
     cache[n] = fib(n - 1) + fib(n - 2);
     return cache[n];
   }
-
   return fib;
 }
-
 const fib = memoizedFib();
-
-console.log(fib(10)); // Computed recursively
-console.log(fib(10)); // Retrieved instantly from cache
-###############################################################
-//2nd approach
-function memoize(fn) {
-  const cache = {}; 
-  return function(...args) {
-    const key = JSON.stringify(args);
-    if (cache[key]) {
-      console.log("Fetching from cache:", key);
-      return cache[key];
-    }
-    console.log("Calculating result:", key);
-    const result = fn(...args);
-    cache[key] = result;
-    return result;
-  };
-}
-// Expensive function
-function slowAdd(a, b) {
-  for (let i = 0; i < 1e8; i++); // Simulate heavy computation
-  return a + b;
-}
-// Memoized version
-const memoizedAdd = memoize(slowAdd);
-console.log(memoizedAdd(3, 4)); // Calculates
-console.log(memoizedAdd(3, 4)); // Fetches from cache
-
+console.log(fib(10)); 
+console.log(fib(10));
 ```
 ---
-## 18. Currying Function for Infinite Sum
+
+## 19. Currying Function for Infinite Sum
 ```js
 function sum(x) {
   let acc = x ?? 0;
   function inner(y) {
     if (y === undefined) return acc;
-    acc += y; return inner;
+    acc += y; 
+    return inner;
   }
   return inner;
 }
-// sum(10)(20)(30)() -> 60
+console.log(sum(10)(20)(30)()); // 60
 ```
 ---
-## 19. remove duplicate from array of object
+
+## 20. Remove duplicate from array of object
 ```js
 const data=[{a:'1',b:'2'},{c:'3',d:'4'},{a:'1',b:'2'}]
 
@@ -534,41 +414,29 @@ function removeDupObj(data){
             newData.push(obj)
             cache[cacheKey]=obj
         }
-        
     }
     return newData
 }
-
-console.log(removeDupObj(data)) // [ { a: '1', b: '2' }, { c: '3', d: '4' } ]
-
+console.log(removeDupObj(data))
 ```
 ---
 
-## 20. Split the data when captialLetter with space and first character should be upperCase
-
-```
-input:["timBrook", "alexCary", "ericWalker"]
-output: ["Tim Brook", "Alex Cary", "Eric Walker"]
-```
-
+## 21. Split the data when captialLetter with space and first character should be upperCase
 ```js
- const newValue = data.map(item => {
-    // Capitalize first letter and then add space before next uppercase letter
-    const formatted =
-      item.charAt(0).toUpperCase() +
-      item
-        .slice(1)
-        .replace(/([A-Z])/g, ' $1'); // adds space before every uppercase letter
-    return formatted.trim();
-  });
-
-console.log(newValue) //["Tim Brook", "Alex Cary", "Eric Walker"]
-
+const data = ["timBrook", "alexCary", "ericWalker"]
+const newValue = data.map(item => {
+  const formatted =
+    item.charAt(0).toUpperCase() +
+    item
+      .slice(1)
+      .replace(/([A-Z])/g, ' $1');
+  return formatted.trim();
+});
+console.log(newValue); // ["Tim Brook", "Alex Cary", "Eric Walker"]
 ```
 ---
-
 
 ### 🚀 Author
--Md Taaj Uddin
-
-Collection of JavaScript problem-solving examples. Feel free to extend with more challenges!
+**Md Taaj Uddin**  
+Collection of JavaScript problem-solving examples.  
+Feel free to extend with more challenges!
