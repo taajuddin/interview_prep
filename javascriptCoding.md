@@ -26,6 +26,7 @@ This repository contains solutions to common JavaScript coding challenges with e
 18. [Memoization of fibonacci function](#17.fiboancii_with_memozation)
 19. [function Currying for infinite sum](#18.function_currying_for_infinite_sum)
 20. [remove Duplicate from array of Object](#19.remove_duplicate_from_Array_of_object)
+21. [Split_the_data _when_captialLetter with space and first character should be upperCase](#21.Split the data when captialLetter with space and first character should be upperCase)
 ---
 ## 1. Flatten Array
 
@@ -539,6 +540,26 @@ function removeDupObj(data){
 console.log(removeDupObj(data)) // [ { a: '1', b: '2' }, { c: '3', d: '4' } ]
 
 ```
+---
+## Split the data when captialLetter with space and first character should be upperCase
+```
+input:["timBrook", "alexCary", "ericWalker"]
+output: ["Tim Brook", "Alex Cary", "Eric Walker"]
+```js
+ const newValue = data.map(item => {
+    // Capitalize first letter and then add space before next uppercase letter
+    const formatted =
+      item.charAt(0).toUpperCase() +
+      item
+        .slice(1)
+        .replace(/([A-Z])/g, ' $1'); // adds space before every uppercase letter
+    return formatted.trim();
+  });
+
+console.log(newValue) //["Tim Brook", "Alex Cary", "Eric Walker"]
+
+```
+---
 ---
 
 
