@@ -23,9 +23,9 @@ This repository contains solutions to common JavaScript coding challenges with e
 15. [Finding the second smallest element in an array](#14-Finding-the-second-smallest-element-in-an-array)
 16. [Anagram checking are two strings anagrams of each other?](#15-Anagram-checking-are-two-strings-anagrams-of-each-other)
 17. [Write a function to find the first non-repeating character in a string](#16.Write-a-function-to-find-the-first-non-repeating-character-in-a-string)
-18. [Memoization of fibonacci function](#17.fiboancii_with_memozation)
-19. [function Currying for infinite sum](#18.function_currying_for_infinite_sum)
-20. [remove Duplicate from array of Object](#19.remove_duplicate_from_Array_of_object)
+18. [Memoization of fibonacci function](#18.fiboancii_with_memozation)
+19. [function Currying for infinite sum](#19.function_currying_for_infinite_sum)
+20. [remove Duplicate from array of Object](#20.remove_duplicate_from_Array_of_object)
 21. [Split the data when captial Lette](#21.Split_the_data_when_captialLetter_with_space_and_first_character_should_be_upperCase)
 ---
 ## 1. Flatten Array
@@ -458,8 +458,8 @@ console.log(firstNonRepeatingChar("infosys")); // 'i'
 console.log(firstNonRepeatingChar("aabbcc"));  // null
 
 ```
-
-## 17.fiboancii with memozation
+---
+## 18.fiboancii with memozation
 ```js
 function memoizedFib() {
   const cache = {};
@@ -506,7 +506,8 @@ console.log(memoizedAdd(3, 4)); // Calculates
 console.log(memoizedAdd(3, 4)); // Fetches from cache
 
 ```
-### Currying Function for Infinite Sum
+---
+## 19. Currying Function for Infinite Sum
 ```js
 function sum(x) {
   let acc = x ?? 0;
@@ -518,7 +519,8 @@ function sum(x) {
 }
 // sum(10)(20)(30)() -> 60
 ```
-### remove duplicate from array of object
+---
+## 20. remove duplicate from array of object
 ```js
 const data=[{a:'1',b:'2'},{c:'3',d:'4'},{a:'1',b:'2'}]
 
