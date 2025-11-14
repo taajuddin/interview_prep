@@ -53,7 +53,7 @@ All upcoming tasks stored and prioritized.
 ### 🗓️ 7. Sprints (Scrum Teams Only)
 
 - A sprint is a short development cycle.
-# Sprint Process:
+##### Sprint Process:
 1. **Sprint Planning** – Choose tasks from the backlog
 2. **Sprint Execution** – Team works on selected tasks
 3. **Daily Scrum** – Check progress
