@@ -20,10 +20,10 @@ A project contains all tasks (issues) related to your product.
 
 ### **2. Issue Types**
 
--   **Epic** -- Large module
--   **Story** -- Feature request
--   **Task** -- Work item
--   **Bug** -- Issue to fix
+-   **Epic** -- Large module (example:  “User Authentication Module”)
+-   **Story** -- Feature request (example: “User can log in with email”)
+-   **Task** -- Work item (example:  “Integrate payment gateway”)
+-   **Bug** -- Issue to fix (example: “Login button not working”
 
 ### **3. Workflow**
 
@@ -50,9 +50,33 @@ Issues move through stages: - To Do
 
 All upcoming tasks stored and prioritized.
 
-### **7. Integrations**
+### 🗓️ 7. Sprints (Scrum Teams Only)
+
+- A sprint is a short development cycle.
+# Sprint Process:
+1. **Sprint Planning** – Choose tasks from the backlog
+2. **Sprint Execution** – Team works on selected tasks
+3. **Daily Scrum** – Check progress
+4. **Sprint Review** – Demo the completed work
+5. **Sprint Retrospective** – Improve next sprint
+
+- Jira tracks sprint progress using a Burndown Chart.
+
+### **8. Integrations**
 
 GitHub, Bitbucket, CI/CD, Slack, Confluence, etc.
+
+### 📊 9. Reporting
+
+- Jira provides helpful reports:
+
+1. Burndown chart
+2. Velocity chart
+3. Sprint report
+4. Bug report
+5. Time tracking
+
+# These help team leads and managers track progress.
 
 ------------------------------------------------------------------------
 
@@ -77,4 +101,8 @@ Jira helps teams: - Organize work
 - Improve collaboration
 - Deliver software faster
 
+# In Very Simple Terms
+
+- Jira is like a digital board where the entire team puts their work, tracks progress, collaborates, and delivers software in a structured way.
+- It brings transparency, accountability, and order to the project.
 ------------------------------------------------------------------------
