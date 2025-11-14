@@ -20,10 +20,10 @@ A project contains all tasks (issues) related to your product.
 
 ### **2. Issue Types**
 
--   **Epic** -- Large module (example:  “User Authentication Module”)
--   **Story** -- Feature request (example: “User can log in with email”)
--   **Task** -- Work item (example:  “Integrate payment gateway”)
--   **Bug** -- Issue to fix (example: “Login button not working”
+-   **Epic** -- Large module  (**example:**  “User Authentication Module”)
+-   **Story** -- Feature request  (**example:** “User can log in with email”)
+-   **Task** -- Work item  (**example:**  “Integrate payment gateway”)
+-   **Bug** -- Issue to fix (**example:** “Login button not working”
 
 ### **3. Workflow**
 
