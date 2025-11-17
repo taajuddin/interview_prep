@@ -463,4 +463,187 @@ See code examples in original content.
 
 ---
 
+# 🚀 Node.js + TypeScript Interview Q&A (5+ Years Experience)
+
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![Express](https://img.shields.io/badge/Express.js-000000?logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?logo=mongodb&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
+
+A complete **Node.js + TypeScript** interview preparation guide, suitable for **5+ years experienced backend engineers**.  
+All answers are short (2–4 lines) for quick revision.
+
+---
+
+## 📌 Table of Contents
+1️⃣ Core Node.js Concepts  
+2️⃣ TypeScript Concepts  
+3️⃣ Database & API Design  
+4️⃣ Debugging Scenarios  
+5️⃣ System Design Basics  
+6️⃣ Coding Exercises
+
+---
+
+# 1️⃣ Core Node.js Interview Q&A
+
+### ❓ What is the Event Loop?
+Node.js is single-threaded and executes asynchronous operations using the **event loop**, powered by **libuv**. It manages callbacks in phases: **timers, pending callbacks, idle/prepare, poll, check, close**.
+
+### ❓ process.nextTick() vs setImmediate()
+| Feature | process.nextTick | setImmediate |
+|--------|----------------|--------------|
+| Execution | Before next event loop phase | On check phase |
+| Priority | High (microtask) | Lower |
+| Usage | Fix recursion, quick async deferrals | Execute after I/O callbacks |
+
+### ❓ What are Streams?
+Streams **process data in chunks** instead of loading everything in memory. Types: **Readable, Writable, Duplex, Transform**.
+
+### ❓ Cluster vs Worker Threads
+| Feature | Cluster (Multi-process) | Worker Threads (Multi-thread) |
+|--------|-------------------------|-------------------------------|
+| Use For | Scaling HTTP servers | CPU heavy tasks |
+| Memory | Separate | Shared |
+| Example | `cluster.fork()` | `new Worker()` |
+
+### ❓ Middleware in Express.js
+Middleware is a function `(req, res, next)` executed in request cycle. Error middleware has 4 args: `(err, req, res, next)`.
+
+### ❓ CommonJS vs ES Modules
+| Feature | CommonJS | ESM |
+|--------|----------|-----|
+| Syntax | require/module.exports | import/export |
+| Execution | Sync | Async |
+| File Type | .js | .mjs / "type": "module" |
+
+---
+
+# 2️⃣ TypeScript Interview Q&A
+
+### ❓ Generics Example
+```ts
+function wrap<T>(value: T): T[] { return [value]; }
+```
+
+### ❓ interface vs type
+| Feature | interface | type |
+|--------|----------|------|
+| Extendable | Yes | Yes |
+| Merge Declarations | Yes | No |
+| Best Use | Object shapes | Union, complex mappings |
+
+### ❓ unknown vs any vs never
+| Type | Meaning |
+|------|--------|
+| any | No type safety |
+| unknown | Must check before use |
+| never | No value can occur |
+
+### ❓ Utility Types Examples
+```ts
+Partial<T>, Required<T>, Pick<T,K>, Record<K,T>, Readonly<T>
+```
+
+### ❓ Method Overloading
+```ts
+function add(a: number, b: number): number;
+function add(a: string, b: string): string;
+```
+
+---
+
+# 3️⃣ Database & API Interview Q&A
+
+### ❓ What is connection pooling?
+Reuse DB connections instead of creating new ones per request → reduces latency and improves throughput.
+
+### ❓ Offset vs Cursor Pagination
+| Method | Best For |
+|--------|---------|
+| Offset LIMIT/OFFSET | Small data sets |
+| Cursor (id/timestamp) | Large scalable APIs, avoids skipping rows |
+
+### ❓ populate vs $lookup
+| Feature | populate (Mongoose) | $lookup (MongoDB Aggregation) |
+|--------|-------------------|------------------------------|
+| Execution | Client-side join | Server-side join |
+| Performance | Slower large data | Faster |
+
+---
+
+# 4️⃣ Debugging Scenarios
+
+### 🐛 Debug #1 - Null reference
+```ts
+const data = await getData();
+return data.name.toUpperCase();
+```
+❌ Error if data = null.  
+✅ Fix:
+```ts
+if(!data) throw new Error("Data not found");
+```
+
+### 🐛 Debug #2 - Express unhandled promise
+```ts
+app.get("/user/:id", async (req, res, next) => {
+  try { res.send(await User.findById(req.params.id)); }
+  catch(e){ next(e); }
+});
+```
+
+### 🐛 Debug #3 - for/var async issue
+```ts
+for (let i=0;i<5;i++) setTimeout(()=>console.log(i),1000);
+```
+
+---
+
+# 5️⃣ System Design Basics
+
+### ❓ How to implement rate limiting?
+Techniques: **Token bucket, Redis counter, express-rate-limit, rate-limiter-flexible**.
+
+### ❓ Graceful shutdown
+```ts
+process.on("SIGTERM", async () => {
+  server.close();
+  await db.close();
+  process.exit(0);
+});
+```
+
+### ❓ Background Jobs in Node.js
+Tools: **BullMQ, Agenda, RabbitMQ, AWS SQS**.
+
+---
+
+# 6️⃣ Coding Exercises
+
+### 🔹 Retry Promise
+```ts
+async function retry(fn, retries = 3) {
+  try { return await fn(); }
+  catch(e){ if(!retries) throw e; return retry(fn, retries-1); }
+}
+```
+
+### 🔹 Promisify Callback
+```ts
+import { promisify } from "util";
+const readFileAsync = promisify(fs.readFile);
+```
+
+---
+
+# 📚 Final Notes
+This document is optimized for:
+✔ Backend Engineers (Node.js, API, Microservices)  
+✔ Interview prep (FAANG, Product, FinTech, SaaS)  
+✔ GitHub portfolio boost
+
+---
+
 *Generated README from provided Node.js notes.*
