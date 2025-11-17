@@ -463,29 +463,6 @@ See code examples in original content.
 
 ---
 
-# 🚀 Node.js + TypeScript Interview Q&A (5+ Years Experience)
-
-![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
-![Express](https://img.shields.io/badge/Express.js-000000?logo=express&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?logo=mongodb&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
-
-A complete **Node.js + TypeScript** interview preparation guide, suitable for **5+ years experienced backend engineers**.  
-All answers are short (2–4 lines) for quick revision.
-
----
-
-## 📌 Table of Contents
-1️⃣ Core Node.js Concepts  
-2️⃣ TypeScript Concepts  
-3️⃣ Database & API Design  
-4️⃣ Debugging Scenarios  
-5️⃣ System Design Basics  
-6️⃣ Coding Exercises
-
----
-
 # 1️⃣ Core Node.js Interview Q&A
 
 ### ❓ What is the Event Loop?
