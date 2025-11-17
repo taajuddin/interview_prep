@@ -27,6 +27,7 @@ This repository contains solutions to common JavaScript coding challenges with e
 19. [function Currying for infinite sum](#19-currying-function-for-infinite-sum)
 20. [remove Duplicate from array of Object](#20-remove-duplicate-from-array-of-object)
 21. [Split the data when captial Letter](#21-split-the-data-when-captialletter-with-space-and-first-character-should-be-uppercase)
+22. [Group By Manager](#22-Group_By_Manager_Object)
 
 ---
 
@@ -432,6 +433,38 @@ console.log(newValue); // ["Tim Brook", "Alex Cary", "Eric Walker"]
 ```
 ---
 
+---
+
+## 22. GroupBy Manager Object 
+```js
+const employees = [
+  { manager: "Alice", user: "John" },
+  { manager: "Alice", user: "David" },
+  { manager: "Bob", user: "Sam" },
+  { manager: "Bob", user: "Emma" },
+  { manager: "Alice", user: "Chris" }
+];
+const groupByManager= employees.reduce((acc, obj)=>{
+    const {user, manager}=obj
+    if(!acc[manager]){
+        acc[manager]=[]
+    }
+    acc[manager].push(user)
+    return acc
+},{})
+const result= Object.entries(groupByManager).map(([manager, user])=>({
+    manager,
+    user
+}))
+console.log(result)
+
+// [
+  { manager: 'Alice', user: [ 'John', 'David', 'Chris' ] },
+  { manager: 'Bob', user: [ 'Sam', 'Emma' ] }
+]
+//
+```
+---
 ### 🚀 Author
 **Md Taaj Uddin**  
 Collection of JavaScript problem-solving examples.  
