@@ -27,7 +27,7 @@ This repository contains solutions to common JavaScript coding challenges with e
 19. [function Currying for infinite sum](#19-currying-function-for-infinite-sum)
 20. [remove Duplicate from array of Object](#20-remove-duplicate-from-array-of-object)
 21. [Split the data when captial Letter](#21-split-the-data-when-captialletter-with-space-and-first-character-should-be-uppercase)
-22. [Group By Manager](#22-Group_By_ManagerObject)
+22. [Group By Manager](#22-groupby-manager-object)
 
 ---
 
