@@ -141,6 +141,86 @@ function Counter() {
 ```
 
 ---
+```js
+// useState Hook
+function Counter() {
+  const [count, setCount] = useState(0);
+  
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>
+        Increment
+      </button>
+    </div>
+  );
+}
+
+// useReducer Hook
+function todoReducer(state, action) {
+  switch (action.type) {
+    case 'ADD_TODO':
+      return [...state, { id: Date.now(), text: action.text }];
+    case 'REMOVE_TODO':
+      return state.filter(todo => todo.id !== action.id);
+    default:
+      return state;
+  }
+}
+
+function TodoList() {
+  const [todos, dispatch] = useReducer(todoReducer, []);
+  const [input, setInput] = useState('');
+  
+  const addTodo = () => {
+    dispatch({ type: 'ADD_TODO', text: input });
+    setInput('');
+  };
+  
+  return (
+    <div>
+      <input 
+        value={input} 
+        onChange={(e) => setInput(e.target.value)} 
+      />
+      <button onClick={addTodo}>Add Todo</button>
+      {todos.map(todo => (
+        <div key={todo.id}>
+          {todo.text}
+          <button onClick={() => 
+            dispatch({ type: 'REMOVE_TODO', id: todo.id })
+          }>
+            Remove
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Context API
+const UserContext = createContext();
+
+function App() {
+  const [user, setUser] = useState(null);
+  
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      <Navbar />
+      <Profile />
+    </UserContext.Provider>
+  );
+}
+
+function Profile() {
+  const { user } = useContext(UserContext);
+  return <div>Welcome, {user?.name}</div>;
+}
+
+```
+---
+
+---
 
 ## 12. Common Redux Interview Tricky Questions
 - Is Redux synchronous or asynchronous? → **By default synchronous, async via middleware**.
