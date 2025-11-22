@@ -33,6 +33,7 @@ This repository contains solutions to common JavaScript coding challenges with e
 
 ---
 ## Debouncing vs Throttling live search example
+#### Debouncing (waits until user stops typing) | Throttling (runs at fixed intervals) 
 
 <table>
 <tr>
