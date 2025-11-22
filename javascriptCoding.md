@@ -31,6 +31,56 @@ This repository contains solutions to common JavaScript coding challenges with e
 
 ---
 
+---
+## Debouncing vs Throttling live search example
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+<h3>Debouncing</h3>
+
+<pre><code class="language-js">
+// Debouncing
+const [debounceSearch, setDebounceSearch] = useState("");
+
+useEffect(() => {
+  const handler = setTimeout(() => {
+    setDebounceSearch(search);
+  }, 500);
+
+  return () => clearTimeout(handler);
+}, [search]);
+</code></pre>
+
+</td>
+<td width="50%" valign="top">
+
+<h3>Throttling</h3>
+
+<pre><code class="language-js">
+// Throttling
+const throttleRef = useRef(false);
+const [throttledSearch, setThrottledSearch] = useState("");
+
+useEffect(() => {
+  if (!throttleRef.current) {
+    setThrottledSearch(search);
+    throttleRef.current = true;
+
+    setTimeout(() => {
+      throttleRef.current = false;
+    }, 500);
+  }
+}, [search]);
+</code></pre>
+
+</td>
+</tr>
+</table>
+
+---
+
 ## 1. Flatten Array
 ```js
 const arr=[1,2,3,[4,5,6],7,8,[10,11],9];
