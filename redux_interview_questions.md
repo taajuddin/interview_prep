@@ -220,6 +220,170 @@ function Profile() {
 
 ```
 ---
+## Redux with toolkit and plain redux example
+---
+```js
+// redux.js   with toolkit
+import { configureStore, createSlice } from "@reduxjs/toolkit";
+
+const todoSlice = createSlice({
+  name: "todos",
+  initialState: [],
+  reducers: {
+    addTodo: (state, action) => {
+      state.push({
+        id: Date.now(),
+        text: action.payload,
+        completed: false
+      });
+    },
+    toggleTodo: (state, action) => {
+      const todo = state.find((t) => t.id === action.payload);
+      if (todo) todo.completed = !todo.completed;
+    },
+    deleteTodo: (state, action) => {
+      return state.filter((t) => t.id !== action.payload);
+    }
+  }
+});
+
+export const { addTodo, toggleTodo, deleteTodo } = todoSlice.actions;
+
+export const store = configureStore({
+  reducer: {
+    todos: todoSlice.reducer,
+  },
+});
+
+```
+```js
+// redux.js  pure redux 
+import { createStore } from "redux";
+
+// ACTION TYPES
+const ADD_TODO = "ADD_TODO";
+const TOGGLE_TODO = "TOGGLE_TODO";
+const DELETE_TODO = "DELETE_TODO";
+
+// ACTION CREATORS
+export const addTodo = (text) => ({
+  type: ADD_TODO,
+  payload: text,
+});
+
+export const toggleTodo = (id) => ({
+  type: TOGGLE_TODO,
+  payload: id,
+});
+
+export const deleteTodo = (id) => ({
+  type: DELETE_TODO,
+  payload: id,
+});
+
+// INITIAL STATE
+const initialState = {
+  todos: [],
+};
+
+// REDUCER (PURE FUNCTION)
+function todoReducer(state = initialState, action) {
+  switch (action.type) {
+    case ADD_TODO:
+      return {
+        todos: [
+          ...state.todos,
+          { id: Date.now(), text: action.payload, completed: false },
+        ],
+      };
+
+    case TOGGLE_TODO:
+      return {
+        todos: state.todos.map((t) =>
+          t.id === action.payload ? { ...t, completed: !t.completed } : t
+        ),
+      };
+
+    case DELETE_TODO:
+      return {
+        todos: state.todos.filter((t) => t.id !== action.payload),
+      };
+
+    default:
+      return state;
+  }
+}
+
+// CREATE STORE
+export const store = createStore(todoReducer);
+
+```
+```js
+// App.jsx compoent
+import React, { useState } from "react";
+import { useSelector, useDispatch, Provider } from "react-redux";
+import { store, addTodo, toggleTodo, deleteTodo } from "./redux";
+
+function App() {
+  const [input, setInput] = useState("");
+  const todos = useSelector((state) => state.todos);
+  const dispatch = useDispatch();
+
+  const handleAdd = () => {
+    if (!input.trim()) return;
+    dispatch(addTodo(input));
+    setInput("");
+  };
+
+  return (
+    <div style={{ width: 400, margin: "50px auto", textAlign: "center" }}>
+      <h2>Redux Todo App (2 Files)</h2>
+
+      <input
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="Add todo..."
+        style={{ padding: 8, width: "70%" }}
+      />
+
+      <button
+        onClick={handleAdd}
+        style={{ padding: "8px 12px", marginLeft: 10 }}
+      >
+        Add
+      </button>
+
+      <ul style={{ textAlign: "left", marginTop: 20 }}>
+        {todos.map((todo) => (
+          <li key={todo.id} style={{ marginBottom: 10 }}>
+            <span
+              onClick={() => dispatch(toggleTodo(todo.id))}
+              style={{
+                textDecoration: todo.completed ? "line-through" : "none",
+                cursor: "pointer",
+                marginRight: 10
+              }}
+            >
+              {todo.text}
+            </span>
+            <button onClick={() => dispatch(deleteTodo(todo.id))}>❌</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// Wrap App with Provider
+export default function Root() {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+}
+```
+---
 
 ---
 
