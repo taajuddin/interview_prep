@@ -762,6 +762,68 @@ class EventEmitter {
 
 ---
 
+---
+```js
+1.
+import { useState } from "react";
+
+export function useCounter(initial = 0) {
+  const [count, setCount] = useState(initial);
+
+  const increment = () => setCount((c) => c + 1);
+  const decrement = () => setCount((c) => c - 1);
+  const reset = () => setCount(initial);
+
+  return { count, increment, decrement, reset };
+}
+//usage
+const { count, increment } = useCounter(5);
+
+
+2. fetch API
+import { useState, useEffect } from "react";
+
+export function useFetch(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    setLoading(true);
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((d) => setData(d))
+      .catch((err) => setError(err))
+      .finally(() => setLoading(false));
+  }, [url]);
+
+  return { data, loading, error };
+}
+//usage
+const { data, loading } = useFetch("https://api.example.com/users");
+
+3. useLocalStorage
+import { useState } from "react";
+
+export function useLocalStorage(key, initial) {
+  const [value, setValue] = useState(() => {
+    const saved = localStorage.getItem(key);
+    return saved ? JSON.parse(saved) : initial;
+  });
+
+  const updateValue = (newValue) => {
+    setValue(newValue);
+    localStorage.setItem(key, JSON.stringify(newValue));
+  };
+
+  return [value, updateValue];
+}
+//usage
+const [theme, setTheme] = useLocalStorage("theme", "light")
+```
+---
+
 
 ## ✅ Quick Recap
 - React = UI library with Virtual DOM
