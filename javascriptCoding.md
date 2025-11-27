@@ -28,6 +28,7 @@ This repository contains solutions to common JavaScript coding challenges with e
 20. [remove Duplicate from array of Object](#20-remove-duplicate-from-array-of-object)
 21. [Split the data when captial Letter](#21-split-the-data-when-captialletter-with-space-and-first-character-should-be-uppercase)
 22. [Group By Manager](#22-groupby-manager-object)
+23. [Group By Email Id](#22-groupby-manager-object)
 
 ---
 
@@ -513,6 +514,46 @@ console.log(result)
 ]
 //
 ```
+---
+## 23. merge in Array if same email is present in same username in same user does not have same make it unique
+```js
+const entries = [
+  ["armaan", "armaan1@gmail.com", "armaan2@gmail.com"],
+  ["armaan", "armaan2@gmail.com", "aura@gmail.com"],
+  ["aarti", "aartisethi@gmail.com", "a.sethi@outlook.com"],
+  ["armaan","anything@gmail.com"]
+];
+
+const result = [];
+
+entries.forEach(entry => {
+  const [user, ...emails] = entry;
+
+  // already existing group with same user & overlapping emails
+  const match = result.find(
+    r => r[0] === user && r.slice(1).some(e => emails.includes(e))
+  );
+
+  if (match) {
+    // merge emails
+    emails.forEach(e => !match.includes(e) && match.push(e));
+  } else {
+    // create new group
+    result.push([...entry]);
+  }
+});
+
+console.log(result);
+/*Output
+[
+    ["armaan", "armaan1@gmail.com", "armaan2@gmail.com", "aura@gmail.com"],
+    ["aarti", "aartisethi@gmail.com", "a.sethi@outlook.com"],
+    ["armaan","anything@gmail.com"]
+]
+*/
+
+```
+
 ---
 ### 🚀 Author
 **Md Taaj Uddin**  
