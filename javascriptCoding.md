@@ -28,7 +28,7 @@ This repository contains solutions to common JavaScript coding challenges with e
 20. [remove Duplicate from array of Object](#20-remove-duplicate-from-array-of-object)
 21. [Split the data when captial Letter](#21-split-the-data-when-captialletter-with-space-and-first-character-should-be-uppercase)
 22. [Group By Manager](#22-groupby-manager-object)
-23. [Group By Email Id](#22-groupby-manager-object)
+23. [Group By Email Id](#23-groupby-manager-email)
 
 ---
 
